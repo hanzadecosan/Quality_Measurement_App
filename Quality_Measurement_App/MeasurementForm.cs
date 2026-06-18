@@ -215,12 +215,31 @@ namespace Quality_Measurement_App
             checkButton.FlatAppearance.BorderSize = 0;
             Controls.Add(checkButton);
 
+            Button previousButton = new Button
+            {
+                Text = "Previous Step",
+                Font = new Font("Segoe UI", 8, FontStyle.Bold),
+                Size = new Size(135, 44),
+                Location = new Point(530, 420),
+                BackColor = Color.FromArgb(255, 193, 7), // Sarı
+                ForeColor = Color.Black,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+
+            previousButton.FlatAppearance.BorderSize = 0;
+            Controls.Add(previousButton);
+            if (currentIndex == 0)
+            {
+                previousButton.Visible = false;
+            }
+
             Button nextButton = new Button
             {
                 Text = currentIndex == criteriaList.Count - 1 ? "Finish" : "Next Step",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(280, 44),
-                Location = new Point(530, 420),
+                Size = new Size(135, 44),
+                Location = new Point(670, 420),
                 BackColor = Color.FromArgb(52, 58, 64),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -270,6 +289,17 @@ namespace Quality_Measurement_App
                     Close();
                 }
             };
+            previousButton.Click += (sender, e) =>
+            {
+                if (currentIndex > 0)
+                {
+                    currentIndex--;
+                    ShowCurrentCriteria();
+                }
+                
+                
+            };
+
         }
 
         private string BuildLimitText(CriteriaItem item)

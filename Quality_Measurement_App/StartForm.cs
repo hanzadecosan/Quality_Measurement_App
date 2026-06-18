@@ -40,7 +40,7 @@ namespace Quality_Measurement_App
             Controls.Clear();
 
             Text = "Quality Control";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen; //general settings of the form
             Size = new Size(820, 560);
             BackColor = Color.FromArgb(235, 238, 243);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -154,7 +154,7 @@ namespace Quality_Measurement_App
 
             continueButton.FlatAppearance.BorderSize = 0;
 
-            continueButton.Click += (sender, e) =>
+            continueButton.Click += (sender, e) => // get the selected user and the selected model and direct to measurement form,next step
             {
                 UserItem selectedUser = userComboBox.SelectedItem as UserItem;
                 ModelItem selectedModel = modelComboBox.SelectedItem as ModelItem;
