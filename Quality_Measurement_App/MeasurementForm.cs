@@ -244,6 +244,7 @@ namespace Quality_Measurement_App
                 {
                     resultLabel.Text = "Result: OK";
                     resultLabel.ForeColor = Color.FromArgb(25, 135, 84);
+                    nextButton.Enabled = true;
                 }
                 else
                 {
@@ -251,7 +252,7 @@ namespace Quality_Measurement_App
                     resultLabel.ForeColor = Color.FromArgb(220, 53, 69);
                 }
 
-                nextButton.Enabled = true;
+                
             };
 
             nextButton.Click += (sender, e) =>
