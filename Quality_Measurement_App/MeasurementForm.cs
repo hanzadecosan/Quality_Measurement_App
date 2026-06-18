@@ -274,8 +274,13 @@ namespace Quality_Measurement_App
 
         private string BuildLimitText(CriteriaItem item)
         {
-            if (item.CheckMethod == "NumericRange")
+            if(item.CheckMethod == "NumericRange")
+{
+                if (item.LowerLimit == item.UpperLimit)
+                    return $"Target: {item.TargetValue} {item.Unit}";
+
                 return $"Range: {item.LowerLimit} - {item.UpperLimit} {item.Unit}";
+            }
 
             if (item.CheckMethod == "NumericMin")
                 return $"Minimum: {item.LowerLimit} {item.Unit}";
