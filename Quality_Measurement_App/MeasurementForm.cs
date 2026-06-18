@@ -250,6 +250,7 @@ namespace Quality_Measurement_App
                 {
                     resultLabel.Text = "Result: NOK";
                     resultLabel.ForeColor = Color.FromArgb(220, 53, 69);
+                    MessageBox.Show("Cannot continue session. Call the supervisor");
                 }
 
                 
