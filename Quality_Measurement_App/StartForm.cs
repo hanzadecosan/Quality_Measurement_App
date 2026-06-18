@@ -254,13 +254,13 @@ namespace Quality_Measurement_App
             TimeSpan now = DateTime.Now.TimeOfDay;
 
             if (now >= new TimeSpan(8, 0, 0) && now < new TimeSpan(16, 0, 0))
-                return "First Shift";
+                return "Morning  Shift";
 
             if (now >= new TimeSpan(16, 0, 0) && now <= new TimeSpan(23, 59, 59))
-                return "Second Shift";
+                return "Noon Shift";
 
             if (now >= new TimeSpan(0, 0, 0) && now <= new TimeSpan(7, 59, 59))
-                return "Third Shift";
+                return "Night Shift";
 
             return "Out of Shift";
         }

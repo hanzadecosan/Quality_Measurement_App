@@ -251,6 +251,7 @@ namespace Quality_Measurement_App
                     resultLabel.Text = "Result: NOK";
                     resultLabel.ForeColor = Color.FromArgb(220, 53, 69);
                     MessageBox.Show("Cannot continue session. Call the supervisor");
+                    nextButton.Enabled = false;
                 }
 
                 
@@ -316,6 +317,7 @@ namespace Quality_Measurement_App
 
         private string CheckMeasurement(CriteriaItem item, Control inputControl)
         {
+
             string inputText = "";
 
             if (inputControl is TextBox textBox)
@@ -331,6 +333,8 @@ namespace Quality_Measurement_App
             {
                 if (!decimal.TryParse(inputText, out decimal value))
                     return "INVALID";
+
+           
 
                 if (item.CheckMethod == "NumericRange")
                 {
@@ -350,6 +354,8 @@ namespace Quality_Measurement_App
 
                 if (item.CheckMethod == "RecordOnly")
                     return "OK";
+
+
             }
 
             if (item.CheckMethod == "Option")
