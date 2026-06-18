@@ -88,6 +88,18 @@ namespace Quality_Measurement_App
             };
             cardPanel.Controls.Add(shiftLabel);
 
+
+            Label dateTimeLabel = new Label
+            {
+                Text = DateTime.Now.ToString("dd.MM.yyyy | HH:mm"),
+                Font = new Font("Segoe UI", 9),
+                ForeColor = Color.FromArgb(120, 130, 140),
+                Size = new Size(380, 22),
+                Location = new Point(40, 145),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            cardPanel.Controls.Add(dateTimeLabel);
+
             Label userLabel = new Label
             {
                 Text = "Select user",
@@ -264,5 +276,7 @@ namespace Quality_Measurement_App
 
             return "Out of Shift";
         }
+
+   
     }
 }
