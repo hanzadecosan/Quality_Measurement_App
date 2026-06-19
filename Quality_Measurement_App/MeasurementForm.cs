@@ -291,6 +291,7 @@ namespace Quality_Measurement_App
                 resultList.Add(new ResultItem
                 {
                     StepNo = item.StepNo,
+                    CriteriaID = item.CriteriaID,
                     CriteriaName = item.CriteriaName,
                     EnteredValue = GetInputValue(inputControl),
                     Status = status

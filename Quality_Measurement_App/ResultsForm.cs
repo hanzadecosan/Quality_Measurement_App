@@ -122,11 +122,7 @@ namespace Quality_Measurement_App
         }
         private void SaveResultsToDatabase()
         {
-            MessageBox.Show(
-    $"UserID = {userId}\n" +
-    $"ModelID = {modelId}\n" +
-    $"ModelName = {modelName}"
-);
+            
             string connectionString =
                 "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
