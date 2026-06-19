@@ -17,12 +17,23 @@ namespace Quality_Measurement_App
         private int sampleNo;
         private List<ResultItem> results;
 
-        public ResultsForm(string userName, string modelName, List<ResultItem> results)
+        public ResultsForm(
+     int userId,
+     string userName,
+     int modelId,
+     string modelName,
+     string sampleGroup,
+     int sampleNo,
+     List<ResultItem> results)
         {
             InitializeComponent();
 
+            this.userId = userId;
             this.userName = userName;
+            this.modelId = modelId;
             this.modelName = modelName;
+            this.sampleGroup = sampleGroup;
+            this.sampleNo = sampleNo;
             this.results = results;
 
             BuildResultsScreen();
@@ -111,6 +122,11 @@ namespace Quality_Measurement_App
         }
         private void SaveResultsToDatabase()
         {
+            MessageBox.Show(
+    $"UserID = {userId}\n" +
+    $"ModelID = {modelId}\n" +
+    $"ModelName = {modelName}"
+);
             string connectionString =
                 "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 

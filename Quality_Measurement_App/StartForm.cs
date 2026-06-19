@@ -199,12 +199,10 @@ namespace Quality_Measurement_App
 
             continueButton.FlatAppearance.BorderSize = 0;
 
-            continueButton.Click += (sender, e) => // get the selected user and the selected model and direct to measurement form,next step
+            continueButton.Click += (sender, e) =>
             {
                 UserItem selectedUser = userComboBox.SelectedItem as UserItem;
                 ModelItem selectedModel = modelComboBox.SelectedItem as ModelItem;
-                string selectedSampleGroup = sampleGroupComboBox.Text;
-                int selectedSampleNo = Convert.ToInt32(sampleNoComboBox.Text);
 
                 if (selectedUser == null || selectedModel == null)
                 {
@@ -217,12 +215,12 @@ namespace Quality_Measurement_App
      selectedUser.FullName,
      selectedModel.ModelID,
      selectedModel.ModelName,
-     selectedSampleGroup,
-     selectedSampleNo
+     sampleGroupComboBox.Text,
+     Convert.ToInt32(sampleNoComboBox.Text)
  );
 
                 measurementForm.Show();
-                Hide();
+                this.Hide();
             };
 
             cardPanel.Controls.Add(continueButton);

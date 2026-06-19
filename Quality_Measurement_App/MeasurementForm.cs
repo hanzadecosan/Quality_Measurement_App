@@ -11,6 +11,8 @@ namespace Quality_Measurement_App
   
     public partial class MeasurementForm : Form
     {
+        private readonly string selectedSampleGroup;
+        private readonly int selectedSampleNo;
         private class CriteriaItem
         {
             public int CriteriaID { get; set; }
@@ -37,7 +39,8 @@ namespace Quality_Measurement_App
 
 
 
-        public MeasurementForm(int userId,
+        public MeasurementForm(
+    int userId,
     string userName,
     int modelId,
     string modelName,
@@ -50,6 +53,8 @@ namespace Quality_Measurement_App
             selectedUserName = userName;
             selectedModelId = modelId;
             selectedModelName = modelName;
+            selectedSampleGroup = sampleGroup;
+            selectedSampleNo = sampleNo;
 
             LoadCriteriaList();
             ShowCurrentCriteria();
@@ -303,10 +308,14 @@ namespace Quality_Measurement_App
                 else
                 {
                     ResultsForm resultsForm = new ResultsForm(
-                        selectedUserName,
-                        selectedModelName,
-                        resultList
-                    );
+    selectedUserId,
+    selectedUserName,
+    selectedModelId,
+    selectedModelName,
+    selectedSampleGroup,
+    selectedSampleNo,
+    resultList
+);
 
                     resultsForm.Show();
                     this.Close();
