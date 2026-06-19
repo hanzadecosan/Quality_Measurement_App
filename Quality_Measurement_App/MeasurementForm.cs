@@ -290,8 +290,12 @@ namespace Quality_Measurement_App
                 }
                 else
                 {
-                    MessageBox.Show("All measurement steps completed.");
-                    Close();
+                    MessageBox.Show("Sample completed successfully.");
+
+                    StartForm startForm = new StartForm();
+                    startForm.Show();
+
+                    this.Close();
                 }
             };
             previousButton.Click += (sender, e) =>
