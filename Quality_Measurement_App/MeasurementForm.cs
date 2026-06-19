@@ -7,16 +7,16 @@ using System.Windows.Forms;
 
 namespace Quality_Measurement_App
 {
+
+    public class ResultItem
+    {
+        public int StepNo { get; set; }
+        public string CriteriaName { get; set; }
+        public string EnteredValue { get; set; }
+        public string Status { get; set; }
+    }
     public partial class MeasurementForm : Form
     {
-        private readonly int selectedUserId;
-        private readonly string selectedUserName;
-        private readonly int selectedModelId;
-        private readonly string selectedModelName;
-
-        private List<CriteriaItem> criteriaList = new List<CriteriaItem>();
-        private int currentIndex = 0;
-
         private class CriteriaItem
         {
             public int CriteriaID { get; set; }
@@ -32,7 +32,17 @@ namespace Quality_Measurement_App
             public string Options { get; set; }
             public string ImagePath { get; set; }
         }
+        private readonly int selectedUserId;
+        private readonly string selectedUserName;
+        private readonly int selectedModelId;
+        private readonly string selectedModelName;
 
+        private List<CriteriaItem> criteriaList = new List<CriteriaItem>();
+        private int currentIndex = 0;
+        private List<ResultItem> resultList = new List<ResultItem>();
+
+      
+        
         public MeasurementForm(int userId,
     string userName,
     int modelId,
@@ -277,8 +287,16 @@ namespace Quality_Measurement_App
                     MessageBox.Show("Cannot continue session. Call the supervisor");
                     nextButton.Enabled = false;
                 }
+                resultList.RemoveAll(r => r.StepNo == item.StepNo);
 
-                
+                resultList.Add(new ResultItem
+                {
+                    StepNo = item.StepNo,
+                    CriteriaName = item.CriteriaName,
+                    EnteredValue = GetInputValue(inputControl),
+                    Status = status
+                });
+
             };
 
             nextButton.Click += (sender, e) =>
@@ -290,11 +308,13 @@ namespace Quality_Measurement_App
                 }
                 else
                 {
-                    MessageBox.Show("Sample completed successfully.");
+                    ResultsForm resultsForm = new ResultsForm(
+                        selectedUserName,
+                        selectedModelName,
+                        resultList
+                    );
 
-                    StartForm startForm = new StartForm();
-                    startForm.Show();
-
+                    resultsForm.Show();
                     this.Close();
                 }
             };
@@ -411,6 +431,16 @@ namespace Quality_Measurement_App
             }
 
             return "OK";
+        }
+        private string GetInputValue(Control inputControl)
+        {
+            if (inputControl is TextBox textBox)
+                return textBox.Text.Trim();
+
+            if (inputControl is ComboBox comboBox)
+                return comboBox.Text.Trim();
+
+            return "";
         }
     }
 }
