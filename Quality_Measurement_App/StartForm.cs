@@ -41,15 +41,15 @@ namespace Quality_Measurement_App
 
             Text = "Quality Control";
             StartPosition = FormStartPosition.CenterScreen; //general settings of the form
-            Size = new Size(820, 560);
+            Size = new Size(820, 620);
             BackColor = Color.FromArgb(235, 238, 243);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
 
             Panel cardPanel = new Panel
             {
-                Size = new Size(460, 390),
-                Location = new Point((ClientSize.Width - 460) / 2, 55),
+                Size = new Size(460, 470),
+                Location = new Point((ClientSize.Width - 460) / 2, 35),
                 BackColor = Color.White
             };
             Controls.Add(cardPanel);
@@ -140,12 +140,57 @@ namespace Quality_Measurement_App
             cardPanel.Controls.Add(modelComboBox);
             LoadModelsFromDatabase(modelComboBox);
 
+            Label sampleGroupLabel = new Label
+            {
+                Text = "Sample group",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(70, 80, 90),
+                Size = new Size(380, 24),
+                Location = new Point(40, 315)
+            };
+            cardPanel.Controls.Add(sampleGroupLabel);
+
+            ComboBox sampleGroupComboBox = new ComboBox
+            {
+                Font = new Font("Segoe UI", 11),
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Size = new Size(180, 32),
+                Location = new Point(40, 342)
+            };
+            sampleGroupComboBox.Items.Add("First Of");
+            sampleGroupComboBox.Items.Add("Last Of");
+            sampleGroupComboBox.SelectedIndex = 0;
+            cardPanel.Controls.Add(sampleGroupComboBox);
+
+            Label sampleNoLabel = new Label
+            {
+                Text = "Sample no",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(70, 80, 90),
+                Size = new Size(180, 24),
+                Location = new Point(240, 315)
+            };
+            cardPanel.Controls.Add(sampleNoLabel);
+
+            ComboBox sampleNoComboBox = new ComboBox
+            {
+                Font = new Font("Segoe UI", 11),
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Size = new Size(180, 32),
+                Location = new Point(240, 342)
+            };
+            sampleNoComboBox.Items.Add("1");
+            sampleNoComboBox.Items.Add("2");
+            sampleNoComboBox.Items.Add("3");
+            sampleNoComboBox.SelectedIndex = 0;
+            cardPanel.Controls.Add(sampleNoComboBox);
+
             Button continueButton = new Button
             {
                 Text = "Start Session",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 Size = new Size(380, 46),
-                Location = new Point(40, 322),
+                Location = new Point(40, 405),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -158,6 +203,8 @@ namespace Quality_Measurement_App
             {
                 UserItem selectedUser = userComboBox.SelectedItem as UserItem;
                 ModelItem selectedModel = modelComboBox.SelectedItem as ModelItem;
+                string selectedSampleGroup = sampleGroupComboBox.Text;
+                int selectedSampleNo = Convert.ToInt32(sampleNoComboBox.Text);
 
                 if (selectedUser == null || selectedModel == null)
                 {
@@ -166,11 +213,13 @@ namespace Quality_Measurement_App
                 }
 
                 MeasurementForm measurementForm = new MeasurementForm(
-                    selectedUser.UserID,
-                    selectedUser.FullName,
-                    selectedModel.ModelID,
-                    selectedModel.ModelName
-                );
+     selectedUser.UserID,
+     selectedUser.FullName,
+     selectedModel.ModelID,
+     selectedModel.ModelName,
+     selectedSampleGroup,
+     selectedSampleNo
+ );
 
                 measurementForm.Show();
                 Hide();
@@ -184,7 +233,7 @@ namespace Quality_Measurement_App
                 Font = new Font("Segoe UI", 9),
                 ForeColor = Color.FromArgb(150, 155, 160),
                 Size = new Size(820, 25),
-                Location = new Point(0, 475),
+                Location = new Point(0, 545),
                 TextAlign = ContentAlignment.MiddleCenter
             };
             Controls.Add(footerLabel);

@@ -33,7 +33,12 @@ namespace Quality_Measurement_App
             public string ImagePath { get; set; }
         }
 
-        public MeasurementForm(int userId, string userName, int modelId, string modelName)
+        public MeasurementForm(int userId,
+    string userName,
+    int modelId,
+    string modelName,
+    string sampleGroup,
+    int sampleNo)
         {
             InitializeComponent();
 
