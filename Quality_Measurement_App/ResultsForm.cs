@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,8 +8,13 @@ namespace Quality_Measurement_App
 {
     public partial class ResultsForm : Form
     {
+
+        private int userId;
         private string userName;
+        private int modelId;
         private string modelName;
+        private string sampleGroup;
+        private int sampleNo;
         private List<ResultItem> results;
 
         public ResultsForm(string userName, string modelName, List<ResultItem> results)
@@ -92,30 +98,123 @@ namespace Quality_Measurement_App
             saveButton.FlatAppearance.BorderSize = 0;
             Controls.Add(saveButton);
 
-            Button backButton = new Button
-            {
-                Text = "Back to Start",
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(180, 44),
-                Location = new Point(660, 485),
-                BackColor = Color.FromArgb(52, 58, 64),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
-            };
-            backButton.FlatAppearance.BorderSize = 0;
-            Controls.Add(backButton);
+            
 
             saveButton.Click += (sender, e) =>
             {
-                MessageBox.Show("Save operation will be added here.");
-            };
-
-            backButton.Click += (sender, e) =>
-            {
+                SaveResultsToDatabase();
                 StartForm startForm = new StartForm();
                 startForm.Show();
                 this.Close();
             };
+
+        }
+        private void SaveResultsToDatabase()
+        {
+            string connectionString =
+                "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlTransaction transaction = connection.BeginTransaction();
+
+                try
+                {
+                    int sessionId;
+
+                    string insertSessionQuery = @"
+                INSERT INTO dbo.InspectionSessions
+                (ModelID, UserID, ShiftName, StartedAt, CompletedAt, StatusID)
+                OUTPUT INSERTED.SessionID
+                VALUES
+                (@ModelID, @UserID, @ShiftName, @StartedAt, @CompletedAt, @StatusID);";
+
+                    using (SqlCommand command = new SqlCommand(insertSessionQuery, connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@ModelID", modelId);
+                        command.Parameters.AddWithValue("@UserID", userId);
+                        command.Parameters.AddWithValue("@ShiftName", GetCurrentShift());
+                        command.Parameters.AddWithValue("@StartedAt", DateTime.Now);
+                        command.Parameters.AddWithValue("@CompletedAt", DateTime.Now);
+                        command.Parameters.AddWithValue("@StatusID", 3);
+
+                        sessionId = Convert.ToInt32(command.ExecuteScalar());
+                    }
+
+                    int sampleId;
+
+                    string insertSampleQuery = @"
+                INSERT INTO dbo.Samples
+                (SessionID, ModelID, SampleGroup, SampleNo)
+                OUTPUT INSERTED.SampleID
+                VALUES
+                (@SessionID, @ModelID, @SampleGroup, @SampleNo);";
+
+                    using (SqlCommand command = new SqlCommand(insertSampleQuery, connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@SessionID", sessionId);
+                        command.Parameters.AddWithValue("@ModelID", modelId);
+                        command.Parameters.AddWithValue("@SampleGroup", sampleGroup);
+                        command.Parameters.AddWithValue("@SampleNo", sampleNo);
+
+                        sampleId = Convert.ToInt32(command.ExecuteScalar());
+                    }
+
+                    foreach (ResultItem result in results)
+                    {
+                        string insertResultQuery = @"
+                    INSERT INTO dbo.MeasurementResults
+                    (SessionID, SampleID, CriteriaID, NumericValue, TextValue, StatusID, MeasuredAt)
+                    VALUES
+                    (@SessionID, @SampleID, @CriteriaID, @NumericValue, @TextValue, @StatusID, @MeasuredAt);";
+
+                        using (SqlCommand command = new SqlCommand(insertResultQuery, connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@SessionID", sessionId);
+                            command.Parameters.AddWithValue("@SampleID", sampleId);
+                            command.Parameters.AddWithValue("@CriteriaID", result.CriteriaID);
+
+                            command.Parameters.AddWithValue("@NumericValue",
+                                result.NumericValue.HasValue ? result.NumericValue.Value : DBNull.Value);
+
+                            command.Parameters.AddWithValue("@TextValue",
+                                string.IsNullOrWhiteSpace(result.TextValue) ? DBNull.Value : result.TextValue);
+
+                            command.Parameters.AddWithValue("@StatusID", result.StatusID);
+                            command.Parameters.AddWithValue("@MeasuredAt", DateTime.Now);
+
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+
+                    MessageBox.Show("Results saved successfully.");
+
+                    StartForm startForm = new StartForm();
+                    startForm.Show();
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Save failed:\n\n" + ex.Message);
+                }
+            }
+        }
+        private string GetCurrentShift()
+        {
+            TimeSpan now = DateTime.Now.TimeOfDay;
+
+            if (now >= new TimeSpan(8, 0, 0) && now < new TimeSpan(16, 0, 0))
+                return "Morning Shift";
+
+            if (now >= new TimeSpan(16, 0, 0) && now <= new TimeSpan(23, 59, 59))
+                return "Night Shift";
+
+            return "Out of Shift";
         }
     }
 }

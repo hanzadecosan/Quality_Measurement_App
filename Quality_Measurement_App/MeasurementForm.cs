@@ -8,13 +8,7 @@ using System.Windows.Forms;
 namespace Quality_Measurement_App
 {
 
-    public class ResultItem
-    {
-        public int StepNo { get; set; }
-        public string CriteriaName { get; set; }
-        public string EnteredValue { get; set; }
-        public string Status { get; set; }
-    }
+  
     public partial class MeasurementForm : Form
     {
         private class CriteriaItem
@@ -41,8 +35,8 @@ namespace Quality_Measurement_App
         private int currentIndex = 0;
         private List<ResultItem> resultList = new List<ResultItem>();
 
-      
-        
+
+
         public MeasurementForm(int userId,
     string userName,
     int modelId,
@@ -325,16 +319,16 @@ namespace Quality_Measurement_App
                     currentIndex--;
                     ShowCurrentCriteria();
                 }
-                
-                
+
+
             };
 
         }
 
         private string BuildLimitText(CriteriaItem item)
         {
-            if(item.CheckMethod == "NumericRange")
-{
+            if (item.CheckMethod == "NumericRange")
+            {
                 if (item.LowerLimit == item.UpperLimit)
                     return $"Target: {item.TargetValue} {item.Unit}";
 
@@ -398,7 +392,7 @@ namespace Quality_Measurement_App
                 if (!decimal.TryParse(inputText, out decimal value))
                     return "INVALID";
 
-           
+
 
                 if (item.CheckMethod == "NumericRange")
                 {
