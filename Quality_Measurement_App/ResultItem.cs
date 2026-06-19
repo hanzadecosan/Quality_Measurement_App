@@ -14,6 +14,7 @@ namespace Quality_Measurement_App
 
         public decimal? NumericValue { get; set; }
         public string TextValue { get; set; }
+
         public int StatusID { get; set; }
     }
 }

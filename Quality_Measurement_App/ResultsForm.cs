@@ -196,7 +196,9 @@ namespace Quality_Measurement_App
 
                             command.Parameters.AddWithValue("@StatusID", result.StatusID);
                             command.Parameters.AddWithValue("@MeasuredAt", DateTime.Now);
+                            
 
+                            
                             command.ExecuteNonQuery();
                         }
                     }

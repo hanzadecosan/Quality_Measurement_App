@@ -288,13 +288,33 @@ namespace Quality_Measurement_App
                 }
                 resultList.RemoveAll(r => r.StepNo == item.StepNo);
 
+                string enteredValue = GetInputValue(inputControl);
+
+                decimal? numericValue = null;
+                string textValue = null;
+
+                if (item.InputType == "Numeric")
+                {
+                    if (decimal.TryParse(enteredValue, out decimal parsedValue))
+                        numericValue = parsedValue;
+                }
+                else
+                {
+                    textValue = enteredValue;
+                }
+
+                resultList.RemoveAll(r => r.CriteriaID == item.CriteriaID);
+
                 resultList.Add(new ResultItem
                 {
                     StepNo = item.StepNo,
                     CriteriaID = item.CriteriaID,
                     CriteriaName = item.CriteriaName,
-                    EnteredValue = GetInputValue(inputControl),
-                    Status = status
+                    EnteredValue = enteredValue,
+                    Status = status,
+                    NumericValue = numericValue,
+                    TextValue = textValue,
+                    StatusID = status == "OK" ? 1 : 2
                 });
 
             };
