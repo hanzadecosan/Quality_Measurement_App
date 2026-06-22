@@ -63,6 +63,12 @@ namespace Quality_Measurement_App
             {
                 MessageBox.Show("Add Model screen will open here.");
             };
+            addUserButton.Click += (sender, e) =>
+            {
+                AddUserForm addUserForm = new AddUserForm();
+                addUserForm.Show();
+                this.Hide();
+            };
 
             manageCriteriaButton.Click += (sender, e) =>
             {
