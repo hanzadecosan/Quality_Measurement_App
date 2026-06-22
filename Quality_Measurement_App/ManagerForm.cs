@@ -61,7 +61,9 @@ namespace Quality_Measurement_App
 
             addModelButton.Click += (sender, e) =>
             {
-                MessageBox.Show("Add Model screen will open here.");
+                AddModelForm addModelForm = new AddModelForm();
+                addModelForm.Show();
+                this.Hide();
             };
             addUserButton.Click += (sender, e) =>
             {
