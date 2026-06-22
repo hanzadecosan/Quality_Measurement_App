@@ -112,9 +112,9 @@ namespace Quality_Measurement_App
             Controls.Clear();
 
             Text = "Measurement Session";
-            StartPosition = FormStartPosition.CenterScreen;
+            WindowState = FormWindowState.Maximized;
             Size = new Size(980, 650);
-            BackColor = Color.FromArgb(245, 247, 250);
+            this.BackColor = Color.White;
 
             if (criteriaList.Count == 0)
             {
@@ -128,47 +128,47 @@ namespace Quality_Measurement_App
             Label titleLabel = new Label
             {
                 Text = "MEASUREMENT SESSION",
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
-                Size = new Size(500, 40),
-                Location = new Point(35, 25)
+                Size = new Size(900, 60),
+                Location = new Point(150, 60)
             };
             Controls.Add(titleLabel);
 
             Label infoLabel = new Label
             {
                 Text = $"Operator: {selectedUserName}   |   Model: {selectedModelName}   |   Step {currentIndex + 1}/{criteriaList.Count}",
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(90, 100, 110),
-                Size = new Size(850, 30),
-                Location = new Point(38, 65)
+                Size = new Size(1500, 35),
+                Location = new Point(155, 125)
             };
             Controls.Add(infoLabel);
 
             Label criteriaLabel = new Label
             {
                 Text = $"{item.StepNo}. {item.CriteriaName}",
-                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                Font = new Font("Segoe UI", 26, FontStyle.Bold),
                 ForeColor = Color.FromArgb(31, 87, 145),
-                Size = new Size(850, 35),
-                Location = new Point(40, 115)
+                Size = new Size(1600, 55),
+                Location = new Point(150, 200)
             };
             Controls.Add(criteriaLabel);
 
             Label limitLabel = new Label
             {
                 Text = BuildLimitText(item),
-                Font = new Font("Segoe UI", 11),
+                Font = new Font("Segoe UI", 15),
                 ForeColor = Color.FromArgb(70, 80, 90),
-                Size = new Size(850, 30),
-                Location = new Point(42, 155)
+                Size = new Size(1600, 40),
+                Location = new Point(155, 260)
             };
             Controls.Add(limitLabel);
 
             PictureBox tutorialImage = new PictureBox
             {
-                Size = new Size(430, 280),
-                Location = new Point(40, 205),
+                Size = new Size(800, 470),
+                Location = new Point(150, 340),
                 BorderStyle = BorderStyle.FixedSingle,
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.White
@@ -183,44 +183,44 @@ namespace Quality_Measurement_App
             Label descriptionLabel = new Label
             {
                 Text = item.Description,
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(80, 90, 100),
-                Size = new Size(430, 70),
-                Location = new Point(40, 500)
+                Size = new Size(800, 120),
+                Location = new Point(150, 835)
             };
             Controls.Add(descriptionLabel);
 
             Label inputLabel = new Label
             {
                 Text = "Measurement input",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
-                Size = new Size(300, 24),
-                Location = new Point(530, 220)
+                Size = new Size(520, 50),
+                Location = new Point(1120, 400)
             };
             Controls.Add(inputLabel);
 
             Control inputControl = CreateInputControl(item);
-            inputControl.Location = new Point(530, 250);
-            inputControl.Size = new Size(280, 34);
+            inputControl.Location = new Point(1120, 500);
+            inputControl.Size = new Size(520, 50);
             Controls.Add(inputControl);
 
             Label resultLabel = new Label
             {
                 Text = "Result: -",
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Font = new Font("Segoe UI", 22, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
-                Size = new Size(330, 35),
-                Location = new Point(530, 360)
+                Size = new Size(520, 60),
+                Location = new Point(1120, 610)
             };
             Controls.Add(resultLabel);
 
             Button checkButton = new Button
             {
                 Text = "Check Measurement",
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(280, 44),
-                Location = new Point(530, 300),
+                Font = new Font("Segoe UI", 15, FontStyle.Bold),
+                Location = new Point(1120, 540),
+                Size = new Size(520, 65),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -232,9 +232,9 @@ namespace Quality_Measurement_App
             Button previousButton = new Button
             {
                 Text = "Previous Step",
-                Font = new Font("Segoe UI", 8, FontStyle.Bold),
-                Size = new Size(135, 44),
-                Location = new Point(530, 420),
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Size = new Size(150, 50),
+                Location = new Point(1300, 750),
                 BackColor = Color.FromArgb(255, 193, 7), // Sarı
                 ForeColor = Color.Black,
                 FlatStyle = FlatStyle.Flat,
@@ -243,6 +243,7 @@ namespace Quality_Measurement_App
 
             previousButton.FlatAppearance.BorderSize = 0;
             Controls.Add(previousButton);
+
             if (currentIndex == 0)
             {
                 previousButton.Visible = false;
@@ -252,8 +253,8 @@ namespace Quality_Measurement_App
             {
                 Text = currentIndex == criteriaList.Count - 1 ? "Finish" : "Next Step",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(135, 44),
-                Location = new Point(670, 420),
+                Size = new Size(150, 50),
+                Location = new Point(1500, 750),
                 BackColor = Color.FromArgb(52, 58, 64),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,

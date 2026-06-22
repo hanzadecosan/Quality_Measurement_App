@@ -45,33 +45,33 @@ namespace Quality_Measurement_App
 
             Text = "Measurement Results";
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(900, 600);
-            BackColor = Color.FromArgb(245, 247, 250);
+            WindowState = FormWindowState.Maximized;
+            BackColor = Color.White;
 
             Label titleLabel = new Label
             {
                 Text = "MEASUREMENT RESULTS",
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
-                Size = new Size(500, 40),
-                Location = new Point(35, 25)
+                Size = new Size(900, 60),
+                Location = new Point(120, 60)
             };
             Controls.Add(titleLabel);
 
             Label infoLabel = new Label
             {
                 Text = $"Operator: {userName}   |   Model: {modelName}",
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(90, 100, 110),
-                Size = new Size(700, 30),
-                Location = new Point(38, 65)
+                Size = new Size(1500, 35),
+                Location = new Point(125, 125)
             };
             Controls.Add(infoLabel);
 
             DataGridView resultsGrid = new DataGridView
             {
-                Location = new Point(40, 115),
-                Size = new Size(800, 340),
+                Location = new Point(120, 210),
+                Size = new Size(1680, 650),
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 ReadOnly = true,
                 AllowUserToAddRows = false,
@@ -100,8 +100,8 @@ namespace Quality_Measurement_App
             {
                 Text = "Save Results",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(180, 44),
-                Location = new Point(460, 485),
+                Size = new Size(220, 60),
+                Location = new Point(1330, 900),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
@@ -118,6 +118,20 @@ namespace Quality_Measurement_App
                 startForm.Show();
                 this.Close();
             };
+            Button previousButton = new Button
+            {
+                Text = "Previous Step",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Size = new Size(150, 50),
+                Location = new Point(1580, 900),
+                BackColor = Color.FromArgb(255, 193, 7), // Sarı
+                ForeColor = Color.Black,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+
+            previousButton.FlatAppearance.BorderSize = 0;
+            Controls.Add(previousButton);
 
         }
         private void SaveResultsToDatabase()

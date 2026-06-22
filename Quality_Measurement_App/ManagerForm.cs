@@ -18,52 +18,46 @@ namespace Quality_Measurement_App
 
             Text = "Manager Panel";
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(820, 560);
-            BackColor = Color.FromArgb(235, 238, 243);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
+            WindowState = FormWindowState.Maximized;
+            BackColor = Color.White;
 
-            Panel cardPanel = new Panel
-            {
-                Size = new Size(460, 380),
-                Location = new Point((ClientSize.Width - 460) / 2, 70),
-                BackColor = Color.White
-            };
-            Controls.Add(cardPanel);
+            
 
             Label titleLabel = new Label
             {
                 Text = "MANAGER PANEL",
-                Font = new Font("Segoe UI", 20, FontStyle.Bold),
+                Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
-                Size = new Size(380, 42),
-                Location = new Point(40, 35),
+                Size = new Size(620, 70),
+                Location = new Point(650, 130),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            cardPanel.Controls.Add(titleLabel);
+            Controls.Add(titleLabel);
 
             Label subtitleLabel = new Label
             {
                 Text = "Quality measurement system management",
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(120, 130, 140),
-                Size = new Size(380, 25),
-                Location = new Point(40, 78),
+                Size = new Size(620, 35),
+                Location = new Point(650, 205),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            cardPanel.Controls.Add(subtitleLabel);
+          Controls.Add(subtitleLabel);
 
-            Button addModelButton = CreateMenuButton("Add New Model", 125);
-            Button manageCriteriaButton = CreateMenuButton("Manage Inspection Criteria", 185);
-            Button viewRecordsButton = CreateMenuButton("View Measurement Records", 245);
-            Button backButton = CreateMenuButton("Back to Start", 305);
+            Button addModelButton = CreateMenuButton("Add New Model", 330);
+            Button addUserButton = CreateMenuButton("Add New User", 420);
+            Button manageCriteriaButton = CreateMenuButton("Manage Inspection Criteria", 510);
+            Button viewRecordsButton = CreateMenuButton("View Measurement Records", 600);
+            Button backButton = CreateMenuButton("Back to Start", 710);
 
             backButton.BackColor = Color.FromArgb(52, 58, 64);
 
-            cardPanel.Controls.Add(addModelButton);
-            cardPanel.Controls.Add(manageCriteriaButton);
-            cardPanel.Controls.Add(viewRecordsButton);
-            cardPanel.Controls.Add(backButton);
+            Controls.Add(addModelButton);
+            Controls.Add(addUserButton);
+            Controls.Add(manageCriteriaButton);
+            Controls.Add(viewRecordsButton);
+            Controls.Add(backButton);
 
             addModelButton.Click += (sender, e) =>
             {
@@ -93,9 +87,9 @@ namespace Quality_Measurement_App
             Button button = new Button
             {
                 Text = text,
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(360, 44),
-                Location = new Point(50, y),
+                Font = new Font("Segoe UI", 15, FontStyle.Bold),
+                Size = new Size(500, 65),
+                Location = new Point(710, y),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -103,7 +97,6 @@ namespace Quality_Measurement_App
             };
 
             button.FlatAppearance.BorderSize = 0;
-
             return button;
         }
     }
