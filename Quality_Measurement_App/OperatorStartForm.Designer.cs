@@ -1,6 +1,6 @@
 ﻿namespace Quality_Measurement_App
 {
-    partial class StartForm
+    partial class OperatorStartForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,30 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pnlCard = new Panel();
             SuspendLayout();
             // 
-            // pnlCard
-            // 
-            pnlCard.Location = new Point(33, 26);
-            pnlCard.Name = "pnlCard";
-            pnlCard.Size = new Size(739, 412);
-            pnlCard.TabIndex = 0;
-            // 
-            // StartForm
+            // OperatorStartForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(pnlCard);
-            Name = "StartForm";
-            Text = "StartForm";
-            Load += StartForm_Load;
+            Name = "OperatorStartForm";
+            Text = "OperatorStartForm";
+           
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel pnlCard;
     }
 }

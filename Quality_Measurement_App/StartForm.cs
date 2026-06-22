@@ -12,6 +12,7 @@ namespace Quality_Measurement_App
             public int UserID { get; set; }
             public string FullName { get; set; }
             public string DisplayText { get; set; }
+            public int RoleID { get; set; }
 
             public override string ToString()
             {
@@ -209,18 +210,25 @@ namespace Quality_Measurement_App
                     MessageBox.Show("Please select a user and a model.");
                     return;
                 }
-
-                MeasurementForm measurementForm = new MeasurementForm(
+                if (selectedUser.RoleID == 1)
+                {
+                    ManagerForm managerForm = new ManagerForm();
+                    managerForm.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MeasurementForm measurementForm = new MeasurementForm(
      selectedUser.UserID,
      selectedUser.FullName,
      selectedModel.ModelID,
      selectedModel.ModelName,
      sampleGroupComboBox.Text,
-     Convert.ToInt32(sampleNoComboBox.Text)
- );
+     Convert.ToInt32(sampleNoComboBox.Text));
+                    measurementForm.Show();
+                    this.Hide();
+                }
 
-                measurementForm.Show();
-                this.Hide();
             };
 
             cardPanel.Controls.Add(continueButton);
@@ -268,6 +276,7 @@ namespace Quality_Measurement_App
                             DisplayText = fullName + "   •   " + roleName
                         });
                     }
+
                 }
             }
 
@@ -324,6 +333,9 @@ namespace Quality_Measurement_App
             return "Out of Shift";
         }
 
-   
+        private void StartForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
