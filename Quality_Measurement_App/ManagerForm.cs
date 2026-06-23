@@ -47,7 +47,7 @@ namespace Quality_Measurement_App
 
             Button addModelButton = CreateMenuButton("Add New Model", 330);
             Button addUserButton = CreateMenuButton("Add New User", 420);
-            Button manageCriteriaButton = CreateMenuButton("Manage Inspection Criteria", 510);
+            Button manageCriteriaButton = CreateMenuButton("Add Inspection Criteria", 510);
             Button viewRecordsButton = CreateMenuButton("View Measurement Records", 600);
             Button backButton = CreateMenuButton("Back to Start", 710);
 
@@ -74,7 +74,12 @@ namespace Quality_Measurement_App
 
             manageCriteriaButton.Click += (sender, e) =>
             {
-                MessageBox.Show("Criteria management screen will open here.");
+                manageCriteriaButton.Click += (sender, e) =>
+                {
+                    AddCriteriaForm addCriteriaForm = new AddCriteriaForm();
+                    addCriteriaForm.Show();
+                    Hide();
+                };
             };
 
             viewRecordsButton.Click += (sender, e) =>
