@@ -1,7 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Globalization;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Quality_Measurement_App
 {
@@ -18,6 +20,20 @@ namespace Quality_Measurement_App
             }
         }
 
+        private Label targetLabel, lowerLabel, upperLabel, unitLabel, optionsLabel;
+        private TextBox targetTextBox, lowerTextBox, upperTextBox, unitTextBox, optionsTextBox;
+        private ComboBox checkMethodComboBox;
+
+        // Layout sabitleri — tek yerden ayarla
+        private const int LEFT = 200;       // Sol kenar
+        private const int COL_W = 320;      // Sütun genişliği
+        private const int GAP = 20;         // Sütunlar arası boşluk
+        // Sütun X pozisyonları
+        // Col1: LEFT                         = 200
+        // Col2: LEFT + COL_W + GAP           = 540
+        // Col3: LEFT + (COL_W+GAP)*2         = 880
+        // Col4: LEFT + (COL_W+GAP)*3         = 1220
+
         public AddCriteriaForm()
         {
             InitializeComponent();
@@ -33,74 +49,130 @@ namespace Quality_Measurement_App
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
 
+            int c1 = LEFT;
+            int c2 = LEFT + COL_W + GAP;        // 540
+            int c3 = LEFT + (COL_W + GAP) * 2;  // 880
+            int c4 = LEFT + (COL_W + GAP) * 3;  // 1220
+
+            // ── Başlık ──────────────────────────────────────────────────────
             Label titleLabel = new Label
             {
                 Text = "ADD INSPECTION CRITERIA",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(900, 70),
-                Location = new Point(510, 70),
-                TextAlign = ContentAlignment.MiddleCenter
+                Location = new Point(c1, 50),
+                TextAlign = ContentAlignment.MiddleLeft
             };
             Controls.Add(titleLabel);
 
-            Label modelLabel = CreateLabel("Model", 420, 180);
-            ComboBox modelComboBox = CreateComboBox(420, 220, 500);
+            // ── Satır 1: Model (geniş) | Step No ────────────────────────────
+            // Model: c1'den c3'e kadar uzansın (2 sütun genişliği)
+            CreateLabel("Model", c1, 150);
+            ComboBox modelComboBox = CreateComboBox(c1, 190, COL_W * 2 + GAP);  // 660 genişlik
             LoadModelsFromDatabase(modelComboBox);
 
-            Label stepLabel = CreateLabel("Step No", 1000, 180);
-            TextBox stepTextBox = CreateTextBox(1000, 220, 220);
+            CreateLabel("Step No", c3, 150);
+            TextBox stepTextBox = CreateTextBox(c3, 190, COL_W);
 
-            Label criteriaNameLabel = CreateLabel("Criteria Name", 420, 300);
-            TextBox criteriaNameTextBox = CreateTextBox(420, 340, 500);
+            // ── Satır 2: Criteria Name | Input Type | Check Method ───────────
+            // Criteria Name: c1, genişlik COL_W
+            // Input Type:    c2, genişlik COL_W
+            // Check Method:  c3, genişlik COL_W
+            CreateLabel("Criteria Name", c1, 270);
+            TextBox criteriaNameTextBox = CreateTextBox(c1, 310, COL_W);
 
-            Label inputTypeLabel = CreateLabel("Input Type", 1000, 300);
-            ComboBox inputTypeComboBox = CreateComboBox(1000, 340, 300);
+            CreateLabel("Input Type", c2, 270);
+            ComboBox inputTypeComboBox = CreateComboBox(c2, 310, COL_W);
             inputTypeComboBox.Items.Add("Numeric");
             inputTypeComboBox.Items.Add("Dropdown");
             inputTypeComboBox.Items.Add("YesNo");
             inputTypeComboBox.Items.Add("Text");
             inputTypeComboBox.SelectedIndex = 0;
 
-            Label checkMethodLabel = CreateLabel("Check Method", 1340, 300);
-            ComboBox checkMethodComboBox = CreateComboBox(1340, 340, 300);
-            checkMethodComboBox.Items.Add("NumericMin");
-            checkMethodComboBox.Items.Add("NumericRange");
-            checkMethodComboBox.Items.Add("RecordOnly");
-            checkMethodComboBox.Items.Add("Option");
-            checkMethodComboBox.SelectedIndex = 0;
+            CreateLabel("Check Method", c3, 270);
+            checkMethodComboBox = CreateComboBox(c3, 310, COL_W);
 
-            Label descriptionLabel = CreateLabel("Description", 420, 420);
-            TextBox descriptionTextBox = CreateTextBox(420, 460, 1220);
+            // ── Satır 3: Description ─────────────────────────────────────────
+            CreateLabel("Description", c1, 390);
+            TextBox descriptionTextBox = CreateTextBox(c1, 430, COL_W * 3 + GAP * 2);  // 3 sütun genişliği
             descriptionTextBox.Multiline = true;
-            descriptionTextBox.Height = 90;
+            descriptionTextBox.Height = 80;
 
-            Label targetLabel = CreateLabel("Target Value", 420, 590);
-            TextBox targetTextBox = CreateTextBox(420, 630, 250);
+            // ── Satır 4: Dinamik tolerans alanları ──────────────────────────
+            targetLabel = CreateLabel("Target Value", c1, 550);
+            targetTextBox = CreateTextBox(c1, 590, COL_W);
 
-            Label lowerLabel = CreateLabel("Lower Limit / Min", 700, 590);
-            TextBox lowerTextBox = CreateTextBox(700, 630, 250);
+            lowerLabel = CreateLabel("Lower Limit / Min", c2, 550);
+            lowerTextBox = CreateTextBox(c2, 590, COL_W);
 
-            Label upperLabel = CreateLabel("Upper Limit / Max", 980, 590);
-            TextBox upperTextBox = CreateTextBox(980, 630, 250);
+            upperLabel = CreateLabel("Upper Limit / Max", c3, 550);
+            upperTextBox = CreateTextBox(c3, 590, COL_W);
 
-            Label unitLabel = CreateLabel("Unit", 1260, 590);
-            TextBox unitTextBox = CreateTextBox(1260, 630, 180);
+            unitLabel = CreateLabel("Unit", c4, 550);
+            unitTextBox = CreateTextBox(c4, 590, 160);
 
-            Label optionsLabel = CreateLabel("Options", 420, 710);
-            TextBox optionsTextBox = CreateTextBox(420, 750, 500);
-            optionsTextBox.PlaceholderText = "Example: OK;NOK or Yes;No";
+            // ── Satır 5: Options | Image ─────────────────────────────────────
+            optionsLabel = CreateLabel("Options (semicolon separated)", c1, 690);
+            optionsTextBox = CreateTextBox(c1, 730, COL_W * 2 + GAP);  // 2 sütun
+            optionsTextBox.PlaceholderText = "Example: OK;NOK  or  Yes;No";
 
-            Label imagePathLabel = CreateLabel("Image Path", 1000, 710);
-            TextBox imagePathTextBox = CreateTextBox(1000, 750, 640);
-            imagePathTextBox.PlaceholderText = @"Images\v28_step01.png";
+            CreateLabel("Image", c3, 690);
 
+            // Image: dropdown + Browse butonu yan yana
+            ComboBox imageComboBox = CreateComboBox(c3, 730, COL_W);
+            imageComboBox.Items.Add("— No image —");
+            LoadImagesFromFolder(imageComboBox);
+            imageComboBox.SelectedIndex = 0;
+
+            Button browseButton = new Button
+            {
+                Text = "Browse...",
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Size = new Size(120, 45),
+                Location = new Point(c3 + COL_W + GAP, 730),
+                BackColor = Color.FromArgb(108, 117, 125),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            browseButton.FlatAppearance.BorderSize = 0;
+            Controls.Add(browseButton);
+
+            browseButton.Click += (sender, e) =>
+            {
+                using (OpenFileDialog dlg = new OpenFileDialog())
+                {
+                    dlg.Title = "Select Image File";
+                    dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp";
+                    dlg.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        // Eğer Images klasörü içindeyse göreceli path kaydet, yoksa tam path
+                        string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                        string fullPath = dlg.FileName;
+
+                        string relativePath = fullPath.StartsWith(basePath, StringComparison.OrdinalIgnoreCase)
+                            ? fullPath.Substring(basePath.Length)
+                            : fullPath;
+
+                        // Dropdown'a yoksa ekle, sonra seç
+                        if (!imageComboBox.Items.Contains(relativePath))
+                            imageComboBox.Items.Add(relativePath);
+
+                        imageComboBox.SelectedItem = relativePath;
+                    }
+                }
+            };
+
+            // ── Butonlar ────────────────────────────────────────────────────
             Button saveButton = new Button
             {
                 Text = "Save Criteria",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
-                Size = new Size(360, 60),
-                Location = new Point(900, 870),
+                Size = new Size(320, 60),
+                Location = new Point(c2, 840),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -113,8 +185,8 @@ namespace Quality_Measurement_App
             {
                 Text = "Back",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
-                Size = new Size(260, 55),
-                Location = new Point(1280, 872),
+                Size = new Size(200, 60),
+                Location = new Point(c2 + 320 + GAP, 840),
                 BackColor = Color.FromArgb(52, 58, 64),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -123,52 +195,92 @@ namespace Quality_Measurement_App
             backButton.FlatAppearance.BorderSize = 0;
             Controls.Add(backButton);
 
+            // ── Event handler'lar ────────────────────────────────────────────
+            inputTypeComboBox.SelectedIndexChanged += (sender, e) =>
+            {
+                UpdateFormForInputType(inputTypeComboBox.Text);
+            };
+
+            checkMethodComboBox.SelectedIndexChanged += (sender, e) =>
+            {
+                UpdateToleranceFields(checkMethodComboBox.Text);
+            };
+
+            UpdateFormForInputType(inputTypeComboBox.Text);
+
+            // ── Save ─────────────────────────────────────────────────────────
             saveButton.Click += (sender, e) =>
             {
                 ModelItem selectedModel = modelComboBox.SelectedItem as ModelItem;
 
                 if (selectedModel == null)
                 {
-                    MessageBox.Show("Please select a model.");
+                    MessageBox.Show("Please select a model.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!int.TryParse(stepTextBox.Text.Trim(), out int stepNo))
+                if (!int.TryParse(stepTextBox.Text.Trim(), out int stepNo) || stepNo <= 0)
                 {
-                    MessageBox.Show("Please enter a valid step number.");
+                    MessageBox.Show("Please enter a valid step number (positive integer).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 string criteriaName = criteriaNameTextBox.Text.Trim();
                 if (string.IsNullOrWhiteSpace(criteriaName))
                 {
-                    MessageBox.Show("Please enter criteria name.");
+                    MessageBox.Show("Please enter criteria name.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                decimal? targetValue = ParseNullableDecimal(targetTextBox.Text);
-                decimal? lowerLimit = ParseNullableDecimal(lowerTextBox.Text);
-                decimal? upperLimit = ParseNullableDecimal(upperTextBox.Text);
+                string inputType = inputTypeComboBox.Text;
+                string checkMethod = checkMethodComboBox.Text;
+
+                if ((inputType == "Dropdown" || inputType == "YesNo") && string.IsNullOrWhiteSpace(optionsTextBox.Text))
+                {
+                    MessageBox.Show("Please enter options (e.g. OK;NOK) for Dropdown/YesNo input.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (inputType == "Numeric")
+                {
+                    if (checkMethod == "NumericRange" &&
+                        (string.IsNullOrWhiteSpace(lowerTextBox.Text) || string.IsNullOrWhiteSpace(upperTextBox.Text)))
+                    {
+                        MessageBox.Show("Please enter both Lower Limit and Upper Limit for NumericRange.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (checkMethod == "NumericMin" && string.IsNullOrWhiteSpace(lowerTextBox.Text))
+                    {
+                        MessageBox.Show("Please enter Lower Limit / Min for NumericMin.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                if (StepNoExists(selectedModel.ModelID, stepNo))
+                {
+                    MessageBox.Show($"Step No {stepNo} already exists for this model.", "Duplicate Step", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                decimal? targetValue = targetTextBox.Visible ? ParseNullableDecimal(targetTextBox.Text) : null;
+                decimal? lowerLimit = lowerTextBox.Visible ? ParseNullableDecimal(lowerTextBox.Text) : null;
+                decimal? upperLimit = upperTextBox.Visible ? ParseNullableDecimal(upperTextBox.Text) : null;
+
+                string selectedImage = imageComboBox.SelectedIndex == 0 ? "" : imageComboBox.Text;
 
                 bool saved = SaveCriteriaToDatabase(
-                    selectedModel.ModelID,
-                    stepNo,
-                    criteriaName,
+                    selectedModel.ModelID, stepNo, criteriaName,
                     descriptionTextBox.Text.Trim(),
-                    inputTypeComboBox.Text,
-                    checkMethodComboBox.Text,
-                    targetValue,
-                    lowerLimit,
-                    upperLimit,
-                    unitTextBox.Text.Trim(),
-                    optionsTextBox.Text.Trim(),
-                    imagePathTextBox.Text.Trim()
+                    inputType, checkMethod,
+                    targetValue, lowerLimit, upperLimit,
+                    unitTextBox.Visible ? unitTextBox.Text.Trim() : "",
+                    optionsTextBox.Visible ? optionsTextBox.Text.Trim() : "",
+                    selectedImage
                 );
 
                 if (saved)
                 {
-                    MessageBox.Show("Criteria saved successfully.");
-
+                    MessageBox.Show("Criteria saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     stepTextBox.Clear();
                     criteriaNameTextBox.Clear();
                     descriptionTextBox.Clear();
@@ -177,7 +289,7 @@ namespace Quality_Measurement_App
                     upperTextBox.Clear();
                     unitTextBox.Clear();
                     optionsTextBox.Clear();
-                    imagePathTextBox.Clear();
+                    imageComboBox.SelectedIndex = 0;
                 }
             };
 
@@ -189,6 +301,100 @@ namespace Quality_Measurement_App
             };
         }
 
+        // ── Images klasöründeki dosyaları dropdown'a yükle ──────────────────
+        private void LoadImagesFromFolder(ComboBox comboBox)
+        {
+            string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+
+            if (!Directory.Exists(imagesFolder))
+                return;
+
+            string[] files = Directory.GetFiles(imagesFolder, "*.png");
+            Array.Sort(files);
+
+            foreach (string file in files)
+            {
+                string fileName = Path.GetFileName(file);
+                comboBox.Items.Add(Path.Combine("Images", fileName));
+            }
+        }
+
+        // ── InputType → CheckMethod listesi + görünür alanlar ───────────────
+        private void UpdateFormForInputType(string inputType)
+        {
+            checkMethodComboBox.Items.Clear();
+
+            switch (inputType)
+            {
+                case "Numeric":
+                    checkMethodComboBox.Items.Add("NumericMin");
+                    checkMethodComboBox.Items.Add("NumericRange");
+                    checkMethodComboBox.Items.Add("RecordOnly");
+                    checkMethodComboBox.SelectedIndex = 0;
+                    checkMethodComboBox.Enabled = true;
+                    SetOptionsVisible(false);
+                    break;
+
+                case "Dropdown":
+                case "YesNo":
+                    checkMethodComboBox.Items.Add("Option");
+                    checkMethodComboBox.SelectedIndex = 0;
+                    checkMethodComboBox.Enabled = false;
+                    SetNumericFieldsVisible(false);
+                    SetOptionsVisible(true);
+                    break;
+
+                case "Text":
+                    checkMethodComboBox.Items.Add("RecordOnly");
+                    checkMethodComboBox.SelectedIndex = 0;
+                    checkMethodComboBox.Enabled = false;
+                    SetNumericFieldsVisible(false);
+                    SetOptionsVisible(false);
+                    break;
+            }
+
+            if (inputType == "Numeric")
+                UpdateToleranceFields(checkMethodComboBox.Text);
+        }
+
+        // ── CheckMethod → tolerans alanları ─────────────────────────────────
+        private void UpdateToleranceFields(string checkMethod)
+        {
+            SetNumericFieldsVisible(false);
+
+            switch (checkMethod)
+            {
+                case "NumericRange":
+                    lowerLabel.Visible = true; lowerTextBox.Visible = true;
+                    upperLabel.Visible = true; upperTextBox.Visible = true;
+                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    break;
+                case "NumericMin":
+                    lowerLabel.Visible = true; lowerTextBox.Visible = true;
+                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    break;
+                case "RecordOnly":
+                    targetLabel.Visible = true; targetTextBox.Visible = true;
+                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    break;
+            }
+        }
+
+        private void SetNumericFieldsVisible(bool visible)
+        {
+            targetLabel.Visible = visible; targetTextBox.Visible = visible;
+            lowerLabel.Visible = visible; lowerTextBox.Visible = visible;
+            upperLabel.Visible = visible; upperTextBox.Visible = visible;
+            unitLabel.Visible = visible; unitTextBox.Visible = visible;
+        }
+
+        private void SetOptionsVisible(bool visible)
+        {
+            optionsLabel.Visible = visible;
+            optionsTextBox.Visible = visible;
+        }
+
+        // ── Yardımcı kontrol oluşturucular ──────────────────────────────────
         private Label CreateLabel(string text, int x, int y)
         {
             Label label = new Label
@@ -199,7 +405,6 @@ namespace Quality_Measurement_App
                 Size = new Size(500, 35),
                 Location = new Point(x, y)
             };
-
             Controls.Add(label);
             return label;
         }
@@ -212,7 +417,6 @@ namespace Quality_Measurement_App
                 Size = new Size(width, 45),
                 Location = new Point(x, y)
             };
-
             Controls.Add(textBox);
             return textBox;
         }
@@ -226,25 +430,48 @@ namespace Quality_Measurement_App
                 Size = new Size(width, 45),
                 Location = new Point(x, y)
             };
-
             Controls.Add(comboBox);
             return comboBox;
         }
 
+        // ── Decimal parse ────────────────────────────────────────────────────
         private decimal? ParseNullableDecimal(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return null;
 
-            text = text.Replace(".", ",");
+            text = text.Trim().Replace(",", ".");
 
-            if (decimal.TryParse(text, out decimal value))
+            if (decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal value))
                 return value;
 
-            MessageBox.Show("Invalid decimal value: " + text);
+            MessageBox.Show($"Invalid numeric value: \"{text}\"", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return null;
         }
 
+        // ── Duplicate StepNo kontrolü ────────────────────────────────────────
+        private bool StepNoExists(int modelId, int stepNo)
+        {
+            string connectionString =
+                "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT COUNT(*) FROM dbo.InspectionCriteria WHERE ModelID = @ModelID AND StepNo = @StepNo";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@ModelID", modelId);
+                        command.Parameters.AddWithValue("@StepNo", stepNo);
+                        return Convert.ToInt32(command.ExecuteScalar()) > 0;
+                    }
+                }
+            }
+            catch { return false; }
+        }
+
+        // ── Model yükleme ────────────────────────────────────────────────────
         private void LoadModelsFromDatabase(ComboBox comboBox)
         {
             string connectionString =
@@ -255,7 +482,6 @@ namespace Quality_Measurement_App
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
                 string query = "SELECT ModelID, ModelName FROM dbo.Models ORDER BY ModelName";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -276,19 +502,12 @@ namespace Quality_Measurement_App
                 comboBox.SelectedIndex = 0;
         }
 
+        // ── Kaydetme ─────────────────────────────────────────────────────────
         private bool SaveCriteriaToDatabase(
-            int modelId,
-            int stepNo,
-            string criteriaName,
-            string description,
-            string inputType,
-            string checkMethod,
-            decimal? targetValue,
-            decimal? lowerLimit,
-            decimal? upperLimit,
-            string unit,
-            string options,
-            string imagePath)
+            int modelId, int stepNo, string criteriaName, string description,
+            string inputType, string checkMethod,
+            decimal? targetValue, decimal? lowerLimit, decimal? upperLimit,
+            string unit, string options, string imagePath)
         {
             string connectionString =
                 "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
@@ -313,33 +532,30 @@ namespace Quality_Measurement_App
                         command.Parameters.AddWithValue("@StepNo", stepNo);
                         command.Parameters.AddWithValue("@CriteriaName", criteriaName);
                         command.Parameters.AddWithValue("@Description",
-                            string.IsNullOrWhiteSpace(description) ? DBNull.Value : description);
+                            string.IsNullOrWhiteSpace(description) ? (object)DBNull.Value : description);
                         command.Parameters.AddWithValue("@InputType", inputType);
                         command.Parameters.AddWithValue("@CheckMethod", checkMethod);
-
                         command.Parameters.AddWithValue("@TargetValue",
-                            targetValue.HasValue ? targetValue.Value : DBNull.Value);
+                            targetValue.HasValue ? (object)targetValue.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@LowerLimit",
-                            lowerLimit.HasValue ? lowerLimit.Value : DBNull.Value);
+                            lowerLimit.HasValue ? (object)lowerLimit.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@UpperLimit",
-                            upperLimit.HasValue ? upperLimit.Value : DBNull.Value);
-
+                            upperLimit.HasValue ? (object)upperLimit.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@Unit",
-                            string.IsNullOrWhiteSpace(unit) ? DBNull.Value : unit);
+                            string.IsNullOrWhiteSpace(unit) ? (object)DBNull.Value : unit);
                         command.Parameters.AddWithValue("@Options",
-                            string.IsNullOrWhiteSpace(options) ? DBNull.Value : options);
+                            string.IsNullOrWhiteSpace(options) ? (object)DBNull.Value : options);
                         command.Parameters.AddWithValue("@ImagePath",
-                            string.IsNullOrWhiteSpace(imagePath) ? DBNull.Value : imagePath);
+                            string.IsNullOrWhiteSpace(imagePath) ? (object)DBNull.Value : imagePath);
 
                         command.ExecuteNonQuery();
                     }
                 }
-
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Criteria could not be saved:\n\n" + ex.Message);
+                MessageBox.Show("Criteria could not be saved:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

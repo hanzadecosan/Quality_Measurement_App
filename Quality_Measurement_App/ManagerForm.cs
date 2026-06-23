@@ -74,12 +74,11 @@ namespace Quality_Measurement_App
 
             manageCriteriaButton.Click += (sender, e) =>
             {
-                manageCriteriaButton.Click += (sender, e) =>
-                {
+                
                     AddCriteriaForm addCriteriaForm = new AddCriteriaForm();
                     addCriteriaForm.Show();
                     Hide();
-                };
+                
             };
 
             viewRecordsButton.Click += (sender, e) =>

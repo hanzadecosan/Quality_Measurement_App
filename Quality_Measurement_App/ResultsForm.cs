@@ -118,20 +118,7 @@ namespace Quality_Measurement_App
                 startForm.Show();
                 this.Close();
             };
-            Button previousButton = new Button
-            {
-                Text = "Previous Step",
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                Size = new Size(150, 50),
-                Location = new Point(1580, 900),
-                BackColor = Color.FromArgb(255, 193, 7), // Sarı
-                ForeColor = Color.Black,
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-
-            previousButton.FlatAppearance.BorderSize = 0;
-            Controls.Add(previousButton);
+            
 
         }
         private void SaveResultsToDatabase()
