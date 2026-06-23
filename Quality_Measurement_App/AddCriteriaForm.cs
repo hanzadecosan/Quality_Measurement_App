@@ -72,14 +72,12 @@ namespace Quality_Measurement_App
             CreateLabel("Step No", c3, 150);
             TextBox stepTextBox = CreateTextBox(c3, 190, COL_W);
 
-            //  Satır 2: Criteria Name | Input Type | Check Method 
-            // Criteria Name: c1, genişlik COL_W
-            // Input Type:    c2, genişlik COL_W
-            // Check Method:  c3, genişlik COL_W
+            
             CreateLabel("Criteria Name", c1, 270);
             TextBox criteriaNameTextBox = CreateTextBox(c1, 310, COL_W);
 
             CreateLabel("Input Type", c2, 270);
+
             ComboBox inputTypeComboBox = CreateComboBox(c2, 310, COL_W);
             inputTypeComboBox.Items.Add("Numeric");
             inputTypeComboBox.Items.Add("Dropdown");
@@ -90,32 +88,30 @@ namespace Quality_Measurement_App
             CreateLabel("Check Method", c3, 270);
             checkMethodComboBox = CreateComboBox(c3, 310, COL_W);
 
-            // ── Satır 3: Description ─────────────────────────────────────────
+            // ── Satır 3: Description
             CreateLabel("Description", c1, 390);
-            TextBox descriptionTextBox = CreateTextBox(c1, 430, COL_W * 3 + GAP * 2);  // 3 sütun genişliği
+            TextBox descriptionTextBox = CreateTextBox(c1, 430, COL_W * 3 + GAP * 2);  
             descriptionTextBox.Multiline = true;
             descriptionTextBox.Height = 80;
 
-            // ── Satır 4: Dinamik tolerans alanları ──────────────────────────
+            
             targetLabel = CreateLabel("Target Value", c1, 550);
             targetTextBox = CreateTextBox(c1, 590, COL_W);
 
-            positiveToleranceLabel = CreateLabel("+ Tolerance", c2, 550);
-            positiveToleranceTextBox = CreateTextBox(c2, 590, COL_W);
-
-            negativeToleranceLabel = CreateLabel("- Tolerance", c3, 550);
-            negativeToleranceTextBox = CreateTextBox(c3, 590, COL_W);
-
+            
             lowerLabel = CreateLabel("Minimum Value", c2, 550);
             lowerTextBox = CreateTextBox(c2, 590, COL_W);
 
             upperLabel = CreateLabel("Upper Limit", c3, 550);
             upperTextBox = CreateTextBox(c3, 590, COL_W);
 
+
             unitLabel = CreateLabel("Unit", c4, 550);
             unitTextBox = CreateTextBox(c4, 590, 160);
+            unitLabel.BringToFront();
+            unitTextBox.BringToFront();
 
-            // ── Satır 5: Options | Image ─────────────────────────────────────
+            // ── Satır 5: Options | Image 
             optionsLabel = CreateLabel("Options", c1, 690);
 
             optionsComboBox = CreateComboBox(c1, 730, COL_W * 2 + GAP);
@@ -175,7 +171,7 @@ namespace Quality_Measurement_App
                 }
             };
 
-            // ── Butonlar ────────────────────────────────────────────────────
+            // ── Butonlar
             Button saveButton = new Button
             {
                 Text = "Save Criteria",
@@ -204,7 +200,7 @@ namespace Quality_Measurement_App
             backButton.FlatAppearance.BorderSize = 0;
             Controls.Add(backButton);
 
-            // ── Event handler'lar ────────────────────────────────────────────
+            // ── Event handler
             inputTypeComboBox.SelectedIndexChanged += (sender, e) =>
             {
                 UpdateFormForInputType(inputTypeComboBox.Text);
@@ -217,7 +213,7 @@ namespace Quality_Measurement_App
 
             UpdateFormForInputType(inputTypeComboBox.Text);
 
-            // ── Save ─────────────────────────────────────────────────────────
+            // ── Save 
             saveButton.Click += (sender, e) =>
             {
                 ModelItem selectedModel = modelComboBox.SelectedItem as ModelItem;
@@ -268,12 +264,27 @@ namespace Quality_Measurement_App
                 }
 
                 decimal? targetValue = targetTextBox.Visible ? ParseNullableDecimal(targetTextBox.Text) : null;
-                decimal? positiveTolerance = positiveToleranceTextBox.Visible ? ParseNullableDecimal(positiveToleranceTextBox.Text) : null;
-                decimal? negativeTolerance = negativeToleranceTextBox.Visible ? ParseNullableDecimal(negativeToleranceTextBox.Text) : null;
 
-                decimal? lowerLimit = lowerTextBox.Visible ? ParseNullableDecimal(lowerTextBox.Text) : null;
-                decimal? upperLimit = upperTextBox.Visible ? ParseNullableDecimal(upperTextBox.Text) : null;
+                decimal? positiveTolerance = null;
+                decimal? negativeTolerance = null;
+                decimal? lowerLimit = null;
+                decimal? upperLimit = null;
 
+                if (checkMethod == "NumericRange")
+                {
+                    positiveTolerance = ParseNullableDecimal(lowerTextBox.Text);
+                    negativeTolerance = ParseNullableDecimal(upperTextBox.Text);
+
+                    positiveTolerance ??= 0;
+                    negativeTolerance ??= 0;
+
+                    lowerLimit = targetValue.Value - negativeTolerance.Value;
+                    upperLimit = targetValue.Value + positiveTolerance.Value;
+                }
+                else if (checkMethod == "NumericMin")
+                {
+                    lowerLimit = ParseNullableDecimal(lowerTextBox.Text);
+                }
                 if (checkMethod == "NumericRange")
                 {
                     if (!targetValue.HasValue)
@@ -331,7 +342,7 @@ namespace Quality_Measurement_App
             };
         }
 
-        // ── Images klasöründeki dosyaları dropdown'a yükle ──────────────────
+        // ── Images dropdowna yükle
         private void LoadImagesFromFolder(ComboBox comboBox)
         {
             string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
@@ -349,7 +360,7 @@ namespace Quality_Measurement_App
             }
         }
 
-        // ── InputType → CheckMethod listesi + görünür alanlar ───────────────
+        // ── visiblity ayarla
         private void UpdateFormForInputType(string inputType)
         {
             checkMethodComboBox.Items.Clear();
@@ -387,7 +398,7 @@ namespace Quality_Measurement_App
                 UpdateToleranceFields(checkMethodComboBox.Text);
         }
 
-        // ── CheckMethod → tolerans alanları
+        
         private void UpdateToleranceFields(string checkMethod)
         {
             SetNumericFieldsVisible(false);
@@ -395,20 +406,25 @@ namespace Quality_Measurement_App
             switch (checkMethod)
             {
                 case "NumericRange":
+                    targetLabel.Text = "Target Value";
+                    lowerLabel.Text = "+ Tolerance";
+                    upperLabel.Text = "- Tolerance";
+
                     targetLabel.Visible = true;
                     targetTextBox.Visible = true;
 
-                    positiveToleranceLabel.Visible = true;
-                    positiveToleranceTextBox.Visible = true;
+                    lowerLabel.Visible = true;
+                    lowerTextBox.Visible = true;
 
-                    negativeToleranceLabel.Visible = true;
-                    negativeToleranceTextBox.Visible = true;
+                    upperLabel.Visible = true;
+                    upperTextBox.Visible = true;
 
                     unitLabel.Visible = true;
                     unitTextBox.Visible = true;
                     break;
 
                 case "NumericMin":
+                    lowerLabel.Text = "Min Değer";
                     lowerLabel.Visible = true;
                     lowerTextBox.Visible = true;
 
@@ -431,12 +447,7 @@ namespace Quality_Measurement_App
             targetLabel.Visible = visible;
             targetTextBox.Visible = visible;
 
-            positiveToleranceLabel.Visible = visible;
-            positiveToleranceTextBox.Visible = visible;
-
-            negativeToleranceLabel.Visible = visible;
-            negativeToleranceTextBox.Visible = visible;
-
+            
             lowerLabel.Visible = visible;
             lowerTextBox.Visible = visible;
 
@@ -459,12 +470,14 @@ namespace Quality_Measurement_App
             Label label = new Label
             {
                 Text = text,
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 35),
                 Location = new Point(x, y)
+                
             };
             Controls.Add(label);
+            label.BringToFront();
             return label;
         }
 
