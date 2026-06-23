@@ -60,6 +60,7 @@ namespace Quality_Measurement_App
                 Value = DateTime.Today
             };
             Controls.Add(toDatePicker);
+            toLabel.BringToFront();
 
             Button loadButton = new Button
             {
@@ -95,6 +96,16 @@ namespace Quality_Measurement_App
                 MultiSelect = false
             };
             Controls.Add(sessionsGrid);
+            Label hintLabel = new Label
+            {
+                Text = "Click a session row to view measurement details.",
+                Font = new Font("Segoe UI", 11),
+                ForeColor = Color.FromArgb(120, 130, 140),
+                Size = new Size(600, 25),
+                Location = new Point(230, 225)
+            };
+            Controls.Add(hintLabel);
+            hintLabel.BringToFront();
 
             sessionsGrid.SelectionChanged += (sender, e) =>
             {

@@ -46,38 +46,83 @@ namespace Quality_Measurement_App
             Text = "Measurement Results";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
-            BackColor = Color.White;
+            BackColor = Color.FromArgb(245, 247, 250);
+
+            Panel headerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 170,
+                BackColor = Color.White
+            };
+            Controls.Add(headerPanel);
 
             Label titleLabel = new Label
             {
-                Text = "MEASUREMENT RESULTS",
-                Font = new Font("Segoe UI", 28, FontStyle.Bold),
+                Text = "Measurement Results",
+                Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
-                Size = new Size(900, 60),
-                Location = new Point(120, 60)
+                AutoSize = true,
+                Location = new Point(90, 45)
             };
-            Controls.Add(titleLabel);
+            headerPanel.Controls.Add(titleLabel);
 
             Label infoLabel = new Label
             {
-                Text = $"Operator: {userName}   |   Model: {modelName}",
-                Font = new Font("Segoe UI", 14),
-                ForeColor = Color.FromArgb(90, 100, 110),
-                Size = new Size(1500, 35),
-                Location = new Point(125, 125)
+                Text = $"Operator: {userName}   •   Model: {modelName}   •   Sample: {sampleGroup} {sampleNo}",
+                Font = new Font("Segoe UI", 13),
+                ForeColor = Color.FromArgb(100, 110, 120),
+                AutoSize = true,
+                Location = new Point(95, 105)
             };
-            Controls.Add(infoLabel);
+            headerPanel.Controls.Add(infoLabel);
+
+            Panel cardPanel = new Panel
+            {
+                Location = new Point(90, 220),
+                Size = new Size(1720, 650),
+                BackColor = Color.White
+            };
+            Controls.Add(cardPanel);
+
+            Label tableTitle = new Label
+            {
+                Text = "Inspection Summary",
+                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                ForeColor = Color.FromArgb(28, 39, 51),
+                AutoSize = true,
+                Location = new Point(30, 25)
+            };
+            cardPanel.Controls.Add(tableTitle);
 
             DataGridView resultsGrid = new DataGridView
             {
-                Location = new Point(120, 210),
-                Size = new Size(1680, 650),
+                Location = new Point(30, 80),
+                Size = new Size(1660, 540),
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 ReadOnly = true,
                 AllowUserToAddRows = false,
+                AllowUserToResizeRows = false,
                 RowHeadersVisible = false,
-                BackgroundColor = Color.White
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.None,
+                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
+                GridColor = Color.FromArgb(230, 235, 240),
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                EnableHeadersVisualStyles = false
             };
+
+            resultsGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(31, 87, 145);
+            resultsGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            resultsGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            resultsGrid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            resultsGrid.ColumnHeadersHeight = 45;
+
+            resultsGrid.DefaultCellStyle.Font = new Font("Segoe UI", 11);
+            resultsGrid.DefaultCellStyle.ForeColor = Color.FromArgb(45, 55, 65);
+            resultsGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(220, 235, 250);
+            resultsGrid.DefaultCellStyle.SelectionForeColor = Color.Black;
+            resultsGrid.RowTemplate.Height = 42;
 
             resultsGrid.Columns.Add("StepNo", "Step");
             resultsGrid.Columns.Add("CriteriaName", "Criteria");
@@ -86,40 +131,49 @@ namespace Quality_Measurement_App
 
             foreach (ResultItem result in results)
             {
-                resultsGrid.Rows.Add(
+                int rowIndex = resultsGrid.Rows.Add(
                     result.StepNo,
                     result.CriteriaName,
                     result.EnteredValue,
                     result.Status
                 );
+
+                DataGridViewRow row = resultsGrid.Rows[rowIndex];
+
+                if (result.Status.ToLower().Contains("ok") || result.Status.ToLower().Contains("pass"))
+                {
+                    row.DefaultCellStyle.BackColor = Color.FromArgb(235, 248, 239);
+                    row.Cells["Status"].Style.ForeColor = Color.FromArgb(34, 139, 84);
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.FromArgb(255, 240, 240);
+                    row.Cells["Status"].Style.ForeColor = Color.FromArgb(190, 55, 55);
+                }
+
+                row.Cells["Status"].Style.Font = new Font("Segoe UI", 11, FontStyle.Bold);
             }
 
-            Controls.Add(resultsGrid);
+            cardPanel.Controls.Add(resultsGrid);
 
             Button saveButton = new Button
             {
                 Text = "Save Results",
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                Size = new Size(220, 60),
-                Location = new Point(1330, 900),
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Size = new Size(230, 60),
+                Location = new Point(1580, 910),
                 BackColor = Color.FromArgb(31, 87, 145),
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
             };
             saveButton.FlatAppearance.BorderSize = 0;
             Controls.Add(saveButton);
 
-            
-
             saveButton.Click += (sender, e) =>
             {
                 SaveResultsToDatabase();
-                StartForm startForm = new StartForm();
-                startForm.Show();
-                this.Close();
             };
-            
-
         }
         private void SaveResultsToDatabase()
         {
@@ -208,8 +262,8 @@ namespace Quality_Measurement_App
 
                     MessageBox.Show("Results saved successfully.");
 
-                    StartForm startForm = new StartForm();
-                    startForm.Show();
+                    LoginForm loginform=new LoginForm();
+                    loginform.Show();
                     this.Close();
                 }
                 catch (Exception ex)
