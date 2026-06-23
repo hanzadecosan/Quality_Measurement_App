@@ -20,19 +20,16 @@ namespace Quality_Measurement_App
             }
         }
 
-        private Label targetLabel, lowerLabel, upperLabel, unitLabel, optionsLabel;
-        private TextBox targetTextBox, lowerTextBox, upperTextBox, unitTextBox, optionsTextBox;
-        private ComboBox checkMethodComboBox;
+        private Label targetLabel, positiveToleranceLabel, negativeToleranceLabel, lowerLabel, upperLabel, unitLabel, optionsLabel;
+        private TextBox targetTextBox, positiveToleranceTextBox, negativeToleranceTextBox, lowerTextBox, upperTextBox, unitTextBox;
+        private ComboBox checkMethodComboBox; private ComboBox optionsComboBox;
 
-        // Layout sabitleri — tek yerden ayarla
-        private const int LEFT = 200;       // Sol kenar
-        private const int COL_W = 320;      // Sütun genişliği
-        private const int GAP = 20;         // Sütunlar arası boşluk
-        // Sütun X pozisyonları
-        // Col1: LEFT                         = 200
-        // Col2: LEFT + COL_W + GAP           = 540
-        // Col3: LEFT + (COL_W+GAP)*2         = 880
-        // Col4: LEFT + (COL_W+GAP)*3         = 1220
+
+
+        private const int LEFT = 200;       
+        private const int COL_W = 320;      
+        private const int GAP = 20;         
+       
 
         public AddCriteriaForm()
         {
@@ -50,11 +47,11 @@ namespace Quality_Measurement_App
             BackColor = Color.White;
 
             int c1 = LEFT;
-            int c2 = LEFT + COL_W + GAP;        // 540
-            int c3 = LEFT + (COL_W + GAP) * 2;  // 880
-            int c4 = LEFT + (COL_W + GAP) * 3;  // 1220
+            int c2 = LEFT + COL_W + GAP;        
+            int c3 = LEFT + (COL_W + GAP) * 2;  
+            int c4 = LEFT + (COL_W + GAP) * 3;  
 
-            // ── Başlık ──────────────────────────────────────────────────────
+            // Başlık 
             Label titleLabel = new Label
             {
                 Text = "ADD INSPECTION CRITERIA",
@@ -66,16 +63,16 @@ namespace Quality_Measurement_App
             };
             Controls.Add(titleLabel);
 
-            // ── Satır 1: Model (geniş) | Step No ────────────────────────────
-            // Model: c1'den c3'e kadar uzansın (2 sütun genişliği)
+            // ── Satır 1: Model | Step No
+            
             CreateLabel("Model", c1, 150);
-            ComboBox modelComboBox = CreateComboBox(c1, 190, COL_W * 2 + GAP);  // 660 genişlik
+            ComboBox modelComboBox = CreateComboBox(c1, 190, COL_W * 2 + GAP);  
             LoadModelsFromDatabase(modelComboBox);
 
             CreateLabel("Step No", c3, 150);
             TextBox stepTextBox = CreateTextBox(c3, 190, COL_W);
 
-            // ── Satır 2: Criteria Name | Input Type | Check Method ───────────
+            //  Satır 2: Criteria Name | Input Type | Check Method 
             // Criteria Name: c1, genişlik COL_W
             // Input Type:    c2, genişlik COL_W
             // Check Method:  c3, genişlik COL_W
@@ -103,19 +100,31 @@ namespace Quality_Measurement_App
             targetLabel = CreateLabel("Target Value", c1, 550);
             targetTextBox = CreateTextBox(c1, 590, COL_W);
 
-            lowerLabel = CreateLabel("Lower Limit / Min", c2, 550);
+            positiveToleranceLabel = CreateLabel("+ Tolerance", c2, 550);
+            positiveToleranceTextBox = CreateTextBox(c2, 590, COL_W);
+
+            negativeToleranceLabel = CreateLabel("- Tolerance", c3, 550);
+            negativeToleranceTextBox = CreateTextBox(c3, 590, COL_W);
+
+            lowerLabel = CreateLabel("Minimum Value", c2, 550);
             lowerTextBox = CreateTextBox(c2, 590, COL_W);
 
-            upperLabel = CreateLabel("Upper Limit / Max", c3, 550);
+            upperLabel = CreateLabel("Upper Limit", c3, 550);
             upperTextBox = CreateTextBox(c3, 590, COL_W);
 
             unitLabel = CreateLabel("Unit", c4, 550);
             unitTextBox = CreateTextBox(c4, 590, 160);
 
             // ── Satır 5: Options | Image ─────────────────────────────────────
-            optionsLabel = CreateLabel("Options (semicolon separated)", c1, 690);
-            optionsTextBox = CreateTextBox(c1, 730, COL_W * 2 + GAP);  // 2 sütun
-            optionsTextBox.PlaceholderText = "Example: OK;NOK  or  Yes;No";
+            optionsLabel = CreateLabel("Options", c1, 690);
+
+            optionsComboBox = CreateComboBox(c1, 730, COL_W * 2 + GAP);
+
+            optionsComboBox.Items.Add("OK;NOK");
+            optionsComboBox.Items.Add("Yes;No");
+            optionsComboBox.Items.Add("Pass;Fail");
+            optionsComboBox.Items.Add("Good;Bad");
+            optionsComboBox.SelectedIndex = 0;
 
             CreateLabel("Image", c3, 690);
 
@@ -235,13 +244,9 @@ namespace Quality_Measurement_App
                 string inputType = inputTypeComboBox.Text;
                 string checkMethod = checkMethodComboBox.Text;
 
-                if ((inputType == "Dropdown" || inputType == "YesNo") && string.IsNullOrWhiteSpace(optionsTextBox.Text))
-                {
-                    MessageBox.Show("Please enter options (e.g. OK;NOK) for Dropdown/YesNo input.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                if ((inputType == "Dropdown" || inputType == "YesNo") && string.IsNullOrWhiteSpace(optionsComboBox.Text))
 
-                if (inputType == "Numeric")
+                    if (inputType == "Numeric")
                 {
                     if (checkMethod == "NumericRange" &&
                         (string.IsNullOrWhiteSpace(lowerTextBox.Text) || string.IsNullOrWhiteSpace(upperTextBox.Text)))
@@ -263,20 +268,45 @@ namespace Quality_Measurement_App
                 }
 
                 decimal? targetValue = targetTextBox.Visible ? ParseNullableDecimal(targetTextBox.Text) : null;
+                decimal? positiveTolerance = positiveToleranceTextBox.Visible ? ParseNullableDecimal(positiveToleranceTextBox.Text) : null;
+                decimal? negativeTolerance = negativeToleranceTextBox.Visible ? ParseNullableDecimal(negativeToleranceTextBox.Text) : null;
+
                 decimal? lowerLimit = lowerTextBox.Visible ? ParseNullableDecimal(lowerTextBox.Text) : null;
                 decimal? upperLimit = upperTextBox.Visible ? ParseNullableDecimal(upperTextBox.Text) : null;
+
+                if (checkMethod == "NumericRange")
+                {
+                    if (!targetValue.HasValue)
+                    {
+                        MessageBox.Show("Please enter Target Value for NumericRange.");
+                        return;
+                    }
+
+                    positiveTolerance ??= 0;
+                    negativeTolerance ??= 0;
+
+                    lowerLimit = targetValue.Value - negativeTolerance.Value;
+                    upperLimit = targetValue.Value + positiveTolerance.Value;
+                }
 
                 string selectedImage = imageComboBox.SelectedIndex == 0 ? "" : imageComboBox.Text;
 
                 bool saved = SaveCriteriaToDatabase(
-                    selectedModel.ModelID, stepNo, criteriaName,
-                    descriptionTextBox.Text.Trim(),
-                    inputType, checkMethod,
-                    targetValue, lowerLimit, upperLimit,
-                    unitTextBox.Visible ? unitTextBox.Text.Trim() : "",
-                    optionsTextBox.Visible ? optionsTextBox.Text.Trim() : "",
-                    selectedImage
-                );
+    selectedModel.ModelID,
+    stepNo,
+    criteriaName,
+    descriptionTextBox.Text.Trim(),
+    inputType,
+    checkMethod,
+    targetValue,
+    positiveTolerance,
+    negativeTolerance,
+    lowerLimit,
+    upperLimit,
+    unitTextBox.Visible ? unitTextBox.Text.Trim() : "",
+    optionsComboBox.Visible ? optionsComboBox.Text.Trim() : "",
+    selectedImage
+);
 
                 if (saved)
                 {
@@ -288,7 +318,7 @@ namespace Quality_Measurement_App
                     lowerTextBox.Clear();
                     upperTextBox.Clear();
                     unitTextBox.Clear();
-                    optionsTextBox.Clear();
+                    optionsComboBox.SelectedIndex = 0;
                     imageComboBox.SelectedIndex = 0;
                 }
             };
@@ -357,7 +387,7 @@ namespace Quality_Measurement_App
                 UpdateToleranceFields(checkMethodComboBox.Text);
         }
 
-        // ── CheckMethod → tolerans alanları ─────────────────────────────────
+        // ── CheckMethod → tolerans alanları
         private void UpdateToleranceFields(string checkMethod)
         {
             SetNumericFieldsVisible(false);
@@ -365,36 +395,65 @@ namespace Quality_Measurement_App
             switch (checkMethod)
             {
                 case "NumericRange":
-                    lowerLabel.Visible = true; lowerTextBox.Visible = true;
-                    upperLabel.Visible = true; upperTextBox.Visible = true;
-                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    targetLabel.Visible = true;
+                    targetTextBox.Visible = true;
+
+                    positiveToleranceLabel.Visible = true;
+                    positiveToleranceTextBox.Visible = true;
+
+                    negativeToleranceLabel.Visible = true;
+                    negativeToleranceTextBox.Visible = true;
+
+                    unitLabel.Visible = true;
+                    unitTextBox.Visible = true;
                     break;
+
                 case "NumericMin":
-                    lowerLabel.Visible = true; lowerTextBox.Visible = true;
-                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    lowerLabel.Visible = true;
+                    lowerTextBox.Visible = true;
+
+                    unitLabel.Visible = true;
+                    unitTextBox.Visible = true;
                     break;
+
                 case "RecordOnly":
-                    targetLabel.Visible = true; targetTextBox.Visible = true;
-                    unitLabel.Visible = true; unitTextBox.Visible = true;
+                    targetLabel.Visible = true;
+                    targetTextBox.Visible = true;
+
+                    unitLabel.Visible = true;
+                    unitTextBox.Visible = true;
                     break;
             }
         }
 
         private void SetNumericFieldsVisible(bool visible)
         {
-            targetLabel.Visible = visible; targetTextBox.Visible = visible;
-            lowerLabel.Visible = visible; lowerTextBox.Visible = visible;
-            upperLabel.Visible = visible; upperTextBox.Visible = visible;
-            unitLabel.Visible = visible; unitTextBox.Visible = visible;
+            targetLabel.Visible = visible;
+            targetTextBox.Visible = visible;
+
+            positiveToleranceLabel.Visible = visible;
+            positiveToleranceTextBox.Visible = visible;
+
+            negativeToleranceLabel.Visible = visible;
+            negativeToleranceTextBox.Visible = visible;
+
+            lowerLabel.Visible = visible;
+            lowerTextBox.Visible = visible;
+
+            upperLabel.Visible = visible;
+            upperTextBox.Visible = visible;
+
+            unitLabel.Visible = visible;
+            unitTextBox.Visible = visible;
         }
 
         private void SetOptionsVisible(bool visible)
         {
             optionsLabel.Visible = visible;
-            optionsTextBox.Visible = visible;
+            optionsComboBox.Visible = visible;
         }
 
-        // ── Yardımcı kontrol oluşturucular ──────────────────────────────────
+        
         private Label CreateLabel(string text, int x, int y)
         {
             Label label = new Label
@@ -434,7 +493,7 @@ namespace Quality_Measurement_App
             return comboBox;
         }
 
-        // ── Decimal parse ────────────────────────────────────────────────────
+        
         private decimal? ParseNullableDecimal(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -449,7 +508,7 @@ namespace Quality_Measurement_App
             return null;
         }
 
-        // ── Duplicate StepNo kontrolü ────────────────────────────────────────
+        // ── Duplicate StepNo kontrolü 
         private bool StepNoExists(int modelId, int stepNo)
         {
             string connectionString =
@@ -471,7 +530,7 @@ namespace Quality_Measurement_App
             catch { return false; }
         }
 
-        // ── Model yükleme ────────────────────────────────────────────────────
+        // ── Model yükleme 
         private void LoadModelsFromDatabase(ComboBox comboBox)
         {
             string connectionString =
@@ -502,12 +561,22 @@ namespace Quality_Measurement_App
                 comboBox.SelectedIndex = 0;
         }
 
-        // ── Kaydetme ─────────────────────────────────────────────────────────
+        // ── Kaydetme 
         private bool SaveCriteriaToDatabase(
-            int modelId, int stepNo, string criteriaName, string description,
-            string inputType, string checkMethod,
-            decimal? targetValue, decimal? lowerLimit, decimal? upperLimit,
-            string unit, string options, string imagePath)
+    int modelId,
+    int stepNo,
+    string criteriaName,
+    string description,
+    string inputType,
+    string checkMethod,
+    decimal? targetValue,
+    decimal? positiveTolerance,
+    decimal? negativeTolerance,
+    decimal? lowerLimit,
+    decimal? upperLimit,
+    string unit,
+    string options,
+    string imagePath)
         {
             string connectionString =
                 "Server=localhost;Database=Quality_Measurement_DB;Trusted_Connection=True;TrustServerCertificate=True;";
@@ -519,13 +588,12 @@ namespace Quality_Measurement_App
                     connection.Open();
 
                     string query = @"
-                        INSERT INTO dbo.InspectionCriteria
-                        (ModelID, StepNo, CriteriaName, Description, InputType, CheckMethod,
-                         TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath)
-                        VALUES
-                        (@ModelID, @StepNo, @CriteriaName, @Description, @InputType, @CheckMethod,
-                         @TargetValue, @LowerLimit, @UpperLimit, @Unit, @Options, @ImagePath);";
-
+INSERT INTO dbo.InspectionCriteria
+(ModelID, StepNo, CriteriaName, Description, InputType, CheckMethod,
+ TargetValue, PositiveTolerance, NegativeTolerance, LowerLimit, UpperLimit, Unit, Options, ImagePath)
+VALUES
+(@ModelID, @StepNo, @CriteriaName, @Description, @InputType, @CheckMethod,
+ @TargetValue, @PositiveTolerance, @NegativeTolerance, @LowerLimit, @UpperLimit, @Unit, @Options, @ImagePath);";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@ModelID", modelId);
@@ -537,6 +605,11 @@ namespace Quality_Measurement_App
                         command.Parameters.AddWithValue("@CheckMethod", checkMethod);
                         command.Parameters.AddWithValue("@TargetValue",
                             targetValue.HasValue ? (object)targetValue.Value : DBNull.Value);
+                        command.Parameters.AddWithValue("@PositiveTolerance",
+                    positiveTolerance.HasValue ? (object)positiveTolerance.Value : DBNull.Value);
+
+                        command.Parameters.AddWithValue("@NegativeTolerance",
+                            negativeTolerance.HasValue ? (object)negativeTolerance.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@LowerLimit",
                             lowerLimit.HasValue ? (object)lowerLimit.Value : DBNull.Value);
                         command.Parameters.AddWithValue("@UpperLimit",
@@ -544,9 +617,10 @@ namespace Quality_Measurement_App
                         command.Parameters.AddWithValue("@Unit",
                             string.IsNullOrWhiteSpace(unit) ? (object)DBNull.Value : unit);
                         command.Parameters.AddWithValue("@Options",
-                            string.IsNullOrWhiteSpace(options) ? (object)DBNull.Value : options);
+    string.IsNullOrWhiteSpace(options) ? (object)DBNull.Value : options);
                         command.Parameters.AddWithValue("@ImagePath",
                             string.IsNullOrWhiteSpace(imagePath) ? (object)DBNull.Value : imagePath);
+                       
 
                         command.ExecuteNonQuery();
                     }
