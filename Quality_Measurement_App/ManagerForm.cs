@@ -83,7 +83,11 @@ namespace Quality_Measurement_App
 
             viewRecordsButton.Click += (sender, e) =>
             {
-                MessageBox.Show("Measurement records screen will open here.");
+                
+                    RecordsForm recordsForm = new RecordsForm();
+                    recordsForm.Show();
+                    Hide();
+                
             };
 
             backButton.Click += (sender, e) =>
