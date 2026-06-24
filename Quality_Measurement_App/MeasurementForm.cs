@@ -73,7 +73,7 @@ namespace Quality_Measurement_App
 
                 string query = @"
                     SELECT CriteriaID, StepNo, CriteriaName, Description, InputType, CheckMethod,
-                           TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath
+                           TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath AND IsActive = 1
                     FROM dbo.InspectionCriteria
                     WHERE ModelID = @ModelID
                     ORDER BY StepNo";
@@ -111,14 +111,14 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Measurement Session";
+            Text = "Ölçüm Oturumu";
             WindowState = FormWindowState.Maximized;
             Size = new Size(980, 650);
             this.BackColor = Color.White;
 
             if (criteriaList.Count == 0)
             {
-                MessageBox.Show("No criteria found for this model.");
+                MessageBox.Show("Bu model için ölçüm kriteri yok");
                 Close();
                 return;
             }
@@ -127,7 +127,7 @@ namespace Quality_Measurement_App
 
             Label titleLabel = new Label
             {
-                Text = "MEASUREMENT SESSION",
+                Text = "ÖLÇÜM OTURUMU",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(900, 60),
@@ -192,7 +192,7 @@ namespace Quality_Measurement_App
 
             Label inputLabel = new Label
             {
-                Text = "Measurement input",
+                Text = "Ölçüm Sonucu",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(520, 50),
@@ -207,7 +207,7 @@ namespace Quality_Measurement_App
 
             Label resultLabel = new Label
             {
-                Text = "Result: -",
+                Text = "Sonuç: -",
                 Font = new Font("Segoe UI", 22, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(520, 60),
@@ -217,7 +217,7 @@ namespace Quality_Measurement_App
 
             Button checkButton = new Button
             {
-                Text = "Check Measurement",
+                Text = "Kontrol Et",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Location = new Point(1120, 540),
                 Size = new Size(520, 65),
@@ -231,7 +231,7 @@ namespace Quality_Measurement_App
 
             Button previousButton = new Button
             {
-                Text = "Previous Step",
+                Text = "Önceki Adım",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 Size = new Size(150, 50),
                 Location = new Point(1300, 750),
@@ -251,7 +251,7 @@ namespace Quality_Measurement_App
 
             Button nextButton = new Button
             {
-                Text = currentIndex == criteriaList.Count - 1 ? "Finish" : "Next Step",
+                Text = currentIndex == criteriaList.Count - 1 ? "Bitir" : "Sıradaki Adım",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 Size = new Size(150, 50),
                 Location = new Point(1500, 750),
@@ -270,7 +270,7 @@ namespace Quality_Measurement_App
 
                 if (status == "INVALID")
                 {
-                    MessageBox.Show("Please enter/select a valid value.");
+                    MessageBox.Show("Lütfen geçerli ölçüm giriniz  ");
                     return;
                 }
 
@@ -284,7 +284,7 @@ namespace Quality_Measurement_App
                 {
                     resultLabel.Text = "Result: NOK";
                     resultLabel.ForeColor = Color.FromArgb(220, 53, 69);
-                    MessageBox.Show("Cannot continue session. Call the supervisor");
+                    MessageBox.Show("Ölçüm durduruldu. Yetkiliye haber veriniz.");
                     nextButton.Enabled = false;
                 }
                 resultList.RemoveAll(r => r.StepNo == item.StepNo);

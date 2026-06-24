@@ -17,14 +17,14 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Add User";
+            Text = "Kullanıcı Ekle";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
 
             Label titleLabel = new Label
             {
-                Text = "ADD NEW USER",
+                Text = "YENİ KULLANICI",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(700, 70),
@@ -35,7 +35,7 @@ namespace Quality_Measurement_App
 
             Label nameLabel = new Label
             {
-                Text = "Full Name",
+                Text = "Ad Soyad",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 35),
@@ -53,7 +53,7 @@ namespace Quality_Measurement_App
 
             Label roleLabel = new Label
             {
-                Text = "Role",
+                Text = "Yetki",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 35),
@@ -75,7 +75,7 @@ namespace Quality_Measurement_App
 
             Button saveButton = new Button
             {
-                Text = "Save User",
+                Text = "Kaydet",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Size = new Size(500, 60),
                 Location = new Point(710, 550),
@@ -89,7 +89,7 @@ namespace Quality_Measurement_App
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 Size = new Size(500, 50),
                 Location = new Point(710, 630),
@@ -107,11 +107,11 @@ namespace Quality_Measurement_App
 
                 if (string.IsNullOrWhiteSpace(fullName))
                 {
-                    MessageBox.Show("Please enter full name.");
+                    MessageBox.Show("Lütfen ad soyad giriniz");
                     return;
                 }
 
-                int roleId = roleComboBox.Text == "Manager" ? 1 : 0;
+                int roleId = roleComboBox.Text == "Yönetici" ? 1 : 0;
 
                 SaveUserToDatabase(fullName, roleId);
 

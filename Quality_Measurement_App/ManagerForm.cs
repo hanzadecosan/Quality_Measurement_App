@@ -23,7 +23,7 @@ namespace Quality_Measurement_App
 
             
 
-            Label titleLabel = new Label
+            Label titleLabel = new Label 
             {
                 Text = "MANAGER PANEL",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold),
@@ -47,14 +47,17 @@ namespace Quality_Measurement_App
 
             Button addModelButton = CreateMenuButton("Add New Model", 330);
             Button addUserButton = CreateMenuButton("Add New User", 420);
-            Button manageCriteriaButton = CreateMenuButton("Add Inspection Criteria", 510);
-            Button viewRecordsButton = CreateMenuButton("View Measurement Records", 600);
-            Button backButton = CreateMenuButton("Back to Start", 710);
+            Button addCriteriaButton = CreateMenuButton("Add Inspection Criteria", 510);
+            Button manageCriteriaButton = CreateMenuButton("Manage Inspection Criteria", 600);
+            Button viewRecordsButton = CreateMenuButton("View Measurement Records", 710);
+            Button backButton = CreateMenuButton("Back to Start", 810);
+            
 
             backButton.BackColor = Color.FromArgb(52, 58, 64);
 
             Controls.Add(addModelButton);
             Controls.Add(addUserButton);
+            Controls.Add(addCriteriaButton);
             Controls.Add(manageCriteriaButton);
             Controls.Add(viewRecordsButton);
             Controls.Add(backButton);
@@ -72,7 +75,7 @@ namespace Quality_Measurement_App
                 this.Hide();
             };
 
-            manageCriteriaButton.Click += (sender, e) =>
+            addCriteriaButton.Click += (sender, e) =>
             {
                 
                     AddCriteriaForm addCriteriaForm = new AddCriteriaForm();
@@ -89,6 +92,12 @@ namespace Quality_Measurement_App
                     Hide();
                 
             };
+            manageCriteriaButton.Click += (sender, e) =>
+            {
+                ManageCriteriaForm form = new ManageCriteriaForm();
+                form.Show();
+                Hide();
+            };
 
             backButton.Click += (sender, e) =>
             {
@@ -96,6 +105,7 @@ namespace Quality_Measurement_App
                 loginform.Show();
                 Close();
             };
+          
         }
 
         private Button CreateMenuButton(string text, int y)

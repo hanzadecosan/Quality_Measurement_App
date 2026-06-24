@@ -35,7 +35,7 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Operator Start";
+            Text = "Operatör başlangıcı";
           
 StartPosition = FormStartPosition.CenterScreen;
 WindowState = FormWindowState.Maximized;
@@ -55,7 +55,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label titleLabel = new Label
             {
-                Text = "OPERATOR PANEL",
+                Text = "OPERATÖR PANELİ",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(620, 60),
@@ -66,7 +66,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label operatorLabel = new Label
             {
-                Text = "Operator: " + selectedUserName,
+                Text = "Operatör: " + selectedUserName,
                 Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(120, 130, 140),
                 Size = new Size(620, 30),
@@ -77,7 +77,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label shiftLabel = new Label
             {
-                Text = "Current shift: " + GetCurrentShift(),
+                Text = "Vardiya: " + GetCurrentShift(),
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 ForeColor = Color.White,
                 BackColor = Color.FromArgb(31, 87, 145),
@@ -101,7 +101,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label modelLabel = new Label
             {
-                Text = "Select model",
+                Text = "Model seçiniz",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(380, 24),
@@ -121,7 +121,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label sampleGroupLabel = new Label
             {
-                Text = "Sample group",
+                Text = "Numune grubu",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(180, 24),
@@ -143,7 +143,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Label sampleNoLabel = new Label
             {
-                Text = "Sample no",
+                Text = "Kaçıncı numune",
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(180, 24),
@@ -166,7 +166,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Button startButton = new Button
             {
-                Text = "Start Measurement",
+                Text = "Ölçüme Başla",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 Size = new Size(500, 55),
                 Location = new Point(710, 650),
@@ -180,7 +180,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Size = new Size(500, 45),
                 Location = new Point(710, 720),
@@ -198,7 +198,7 @@ BackColor = Color.FromArgb(235, 238, 243);
 
                 if (selectedModel == null)
                 {
-                    MessageBox.Show("Please select a model.");
+                    MessageBox.Show("Lütfen model seçiniz");
                     return;
                 }
 

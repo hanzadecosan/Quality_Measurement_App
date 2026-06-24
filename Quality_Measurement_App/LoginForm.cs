@@ -35,7 +35,7 @@ namespace Quality_Measurement_App
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
 
-            Text = "User Selection";
+            Text = "Kullanıcı Seçiniz";
             StartPosition = FormStartPosition.CenterScreen;
             Size = new Size(760, 470);
             BackColor = Color.FromArgb(235, 238, 243);
@@ -51,7 +51,7 @@ namespace Quality_Measurement_App
 
             Label titleLabel = new Label
             {
-                Text = "QUALITY CONTROL",
+                Text = "KALİTE KONTROL",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(700, 70),
@@ -62,7 +62,7 @@ namespace Quality_Measurement_App
 
             Label subtitleLabel = new Label
             {
-                Text = "Select user to continue",
+                Text = "Devam etmek için kullanıcı seçin",
                 Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(120, 130, 140),
                 Size = new Size(700, 40),
@@ -73,7 +73,7 @@ namespace Quality_Measurement_App
 
             Label userLabel = new Label
             {
-                Text = "User Selection",
+                Text = "Kullanıcı seçimi",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 45),
@@ -94,7 +94,7 @@ namespace Quality_Measurement_App
 
             Button continueButton = new Button
             {
-                Text = "Continue",
+                Text = "Devam Et",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 Size = new Size(500, 60),
                 Location = new Point(710, 500),
@@ -112,7 +112,7 @@ namespace Quality_Measurement_App
 
                 if (selectedUser == null)
                 {
-                    MessageBox.Show("Please select a user.");
+                    MessageBox.Show("Kullanıcı seçiniz.");
                     return;
                 }
 
