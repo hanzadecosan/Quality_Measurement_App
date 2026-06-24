@@ -73,7 +73,7 @@ namespace Quality_Measurement_App
 
                 string query = @"
                     SELECT CriteriaID, StepNo, CriteriaName, Description, InputType, CheckMethod,
-                           TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath AND IsActive = 1
+                           TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath, IsActive = 1
                     FROM dbo.InspectionCriteria
                     WHERE ModelID = @ModelID
                     ORDER BY StepNo";

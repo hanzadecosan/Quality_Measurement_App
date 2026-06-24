@@ -155,11 +155,11 @@ namespace Quality_Measurement_App
                     }
                 }
 
-                MessageBox.Show("User saved successfully.");
+                MessageBox.Show("Kullanıcı kaydedildi!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("User could not be saved:\n\n" + ex.Message);
+                MessageBox.Show("Kayıt başarısız:\n\n" + ex.Message);
             }
         }
     }

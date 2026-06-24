@@ -45,7 +45,7 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Manage Criteria";
+            Text = "Kriter Yönet";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
@@ -57,7 +57,7 @@ namespace Quality_Measurement_App
 
             Label titleLabel = new Label
             {
-                Text = "MANAGE INSPECTION CRITERIA",
+                Text = "KRİTERLERİ DÜZENLE",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(1000, 70),
@@ -69,7 +69,7 @@ namespace Quality_Measurement_App
             modelComboBox = CreateComboBox(c1, 175, COL_W * 2 + GAP);
             LoadModels();
 
-            CreateLabel("Criteria", c3, 135);
+            CreateLabel("Kriter", c3, 135);
             criteriaComboBox = CreateComboBox(c3, 175, COL_W * 2 + GAP);
 
             modelComboBox.SelectedIndexChanged += (sender, e) =>
@@ -84,47 +84,47 @@ namespace Quality_Measurement_App
                     LoadCriteriaDetails(selected.CriteriaID);
             };
 
-            CreateLabel("Step No", c1, 255);
+            CreateLabel("Adım no", c1, 255);
             stepTextBox = CreateTextBox(c1, 295, COL_W);
 
-            CreateLabel("Criteria Name", c2, 255);
+            CreateLabel("Kriterin adı", c2, 255);
             criteriaNameTextBox = CreateTextBox(c2, 295, COL_W);
 
-            CreateLabel("Input Type", c3, 255);
+            CreateLabel("Ölçüm türü", c3, 255);
             inputTypeComboBox = CreateComboBox(c3, 295, COL_W);
             inputTypeComboBox.Items.Add("Numeric");
             inputTypeComboBox.Items.Add("Dropdown");
             inputTypeComboBox.Items.Add("YesNo");
             inputTypeComboBox.Items.Add("Text");
 
-            CreateLabel("Check Method", c4, 255);
+            CreateLabel("Kontrol metodu", c4, 255);
             checkMethodComboBox = CreateComboBox(c4, 295, COL_W);
 
-            CreateLabel("Description", c1, 370);
+            CreateLabel("Açıklama metni", c1, 370);
             descriptionTextBox = CreateTextBox(c1, 410, COL_W * 3 + GAP * 2);
             descriptionTextBox.Multiline = true;
             descriptionTextBox.Height = 80;
 
-            targetLabel = CreateLabel("Target Value", c1, 535);
+            targetLabel = CreateLabel("Hedef değer", c1, 535);
             targetTextBox = CreateTextBox(c1, 575, COL_W);
 
-            lowerLabel = CreateLabel("Minimum Value", c2, 535);
+            lowerLabel = CreateLabel("Minimum değer", c2, 535);
             lowerTextBox = CreateTextBox(c2, 575, COL_W);
 
-            upperLabel = CreateLabel("Upper Limit", c3, 535);
+            upperLabel = CreateLabel("Maksimum değer", c3, 535);
             upperTextBox = CreateTextBox(c3, 575, COL_W);
 
-            unitLabel = CreateLabel("Unit", c4, 535);
+            unitLabel = CreateLabel("Birim", c4, 535);
             unitTextBox = CreateTextBox(c4, 575, 160);
 
-            optionsLabel = CreateLabel("Options", c1, 675);
+            optionsLabel = CreateLabel("Seçenekler", c1, 675);
             optionsComboBox = CreateComboBox(c1, 715, COL_W * 2 + GAP);
             optionsComboBox.Items.Add("OK;NOK");
             optionsComboBox.Items.Add("Yes;No");
             optionsComboBox.Items.Add("Pass;Fail");
             optionsComboBox.Items.Add("Good;Bad");
 
-            CreateLabel("Image", c3, 675);
+            CreateLabel("Resim", c3, 675);
             imageComboBox = CreateComboBox(c3, 715, COL_W);
             imageComboBox.Items.Add("— No image —");
             LoadImagesFromFolder();
@@ -132,7 +132,7 @@ namespace Quality_Measurement_App
 
             Button browseButton = new Button
             {
-                Text = "Browse...",
+                Text = "Ara...",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Size = new Size(120, 45),
                 Location = new Point(c3 + COL_W + GAP, 715),
@@ -170,7 +170,7 @@ namespace Quality_Measurement_App
 
             Button updateButton = new Button
             {
-                Text = "Update Criteria",
+                Text = "Kriteri güncelle",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Size = new Size(300, 60),
                 Location = new Point(c1, 835),
@@ -183,7 +183,7 @@ namespace Quality_Measurement_App
 
             Button deactivateButton = new Button
             {
-                Text = "Deactivate",
+                Text = "Kriteri sil",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Size = new Size(260, 60),
                 Location = new Point(c1 + 320, 835),
@@ -196,7 +196,7 @@ namespace Quality_Measurement_App
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 Size = new Size(220, 60),
                 Location = new Point(c1 + 600, 835),
@@ -365,13 +365,13 @@ namespace Quality_Measurement_App
         {
             if (selectedCriteriaId == 0)
             {
-                MessageBox.Show("Please select a criteria.");
+                MessageBox.Show("Lütfen kriter seçin");
                 return;
             }
 
             if (!int.TryParse(stepTextBox.Text.Trim(), out int stepNo) || stepNo <= 0)
             {
-                MessageBox.Show("Please enter a valid step number.");
+                MessageBox.Show("Geçerli adım no giriniz");
                 return;
             }
 
@@ -388,7 +388,7 @@ namespace Quality_Measurement_App
             {
                 if (!targetValue.HasValue)
                 {
-                    MessageBox.Show("Please enter Target Value for NumericRange.");
+                    MessageBox.Show(" NumericRange için hedef değer girin.");
                     return;
                 }
 
@@ -457,12 +457,12 @@ namespace Quality_Measurement_App
                     }
                 }
 
-                MessageBox.Show("Criteria updated successfully.");
+                MessageBox.Show("Kriter güncellendi!");
                 LoadCriteriaForSelectedModel();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Update failed:\n\n" + ex.Message);
+                MessageBox.Show("Başarısız!:\n\n" + ex.Message);
             }
         }
 
@@ -470,13 +470,13 @@ namespace Quality_Measurement_App
         {
             if (selectedCriteriaId == 0)
             {
-                MessageBox.Show("Please select a criteria.");
+                MessageBox.Show("Kriter seçiniz!");
                 return;
             }
 
             DialogResult result = MessageBox.Show(
-                "This criteria will be deactivated. It will not appear in new measurements, but old records will stay valid.\n\nContinue?",
-                "Confirm Deactivate",
+                "Bu kriter deaktive edilecektir. Eski kayıtlar bu durumdan etkilenmez, yeni kayıtlarda kriter görünmez.\n\nContinue?",
+                "Onayla?",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
@@ -502,7 +502,7 @@ namespace Quality_Measurement_App
                 }
             }
 
-            MessageBox.Show("Criteria deactivated.");
+            MessageBox.Show("Kriter silindi ");
             LoadCriteriaForSelectedModel();
         }
 
@@ -550,9 +550,9 @@ namespace Quality_Measurement_App
             switch (checkMethod)
             {
                 case "NumericRange":
-                    targetLabel.Text = "Target Value";
-                    lowerLabel.Text = "+ Tolerance";
-                    upperLabel.Text = "- Tolerance";
+                    targetLabel.Text = "Hedef değer";
+                    lowerLabel.Text = "+ Tolerans";
+                    upperLabel.Text = "- Tolerans";
 
                     targetLabel.Visible = true;
                     targetTextBox.Visible = true;
@@ -565,7 +565,7 @@ namespace Quality_Measurement_App
                     break;
 
                 case "NumericMin":
-                    lowerLabel.Text = "Minimum Value";
+                    lowerLabel.Text = "Minimum değer";
                     lowerLabel.Visible = true;
                     lowerTextBox.Visible = true;
                     unitLabel.Visible = true;
@@ -573,7 +573,7 @@ namespace Quality_Measurement_App
                     break;
 
                 case "RecordOnly":
-                    targetLabel.Text = "Target Value";
+                    targetLabel.Text = "Hedef değer";
                     targetLabel.Visible = true;
                     targetTextBox.Visible = true;
                     unitLabel.Visible = true;

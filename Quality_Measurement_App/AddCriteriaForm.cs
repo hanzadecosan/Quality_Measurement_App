@@ -41,7 +41,7 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Add Criteria";
+            Text = "Kriter ekle";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
@@ -54,7 +54,7 @@ namespace Quality_Measurement_App
             // Başlık 
             Label titleLabel = new Label
             {
-                Text = "ADD INSPECTION CRITERIA",
+                Text = "YENİ KRİTER EKLE",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(900, 70),
@@ -69,14 +69,14 @@ namespace Quality_Measurement_App
             ComboBox modelComboBox = CreateComboBox(c1, 190, COL_W * 2 + GAP);  
             LoadModelsFromDatabase(modelComboBox);
 
-            CreateLabel("Step No", c3, 150);
+            CreateLabel("Kaçıncı Adım?", c3, 150);
             TextBox stepTextBox = CreateTextBox(c3, 190, COL_W);
 
             
-            CreateLabel("Criteria Name", c1, 270);
+            CreateLabel("Kriterin Adı", c1, 270);
             TextBox criteriaNameTextBox = CreateTextBox(c1, 310, COL_W);
 
-            CreateLabel("Input Type", c2, 270);
+            CreateLabel("Ölçüm türü", c2, 270);
 
             ComboBox inputTypeComboBox = CreateComboBox(c2, 310, COL_W);
             inputTypeComboBox.Items.Add("Numeric");
@@ -85,34 +85,34 @@ namespace Quality_Measurement_App
             inputTypeComboBox.Items.Add("Text");
             inputTypeComboBox.SelectedIndex = 0;
 
-            CreateLabel("Check Method", c3, 270);
+            CreateLabel("Kontrol metodu", c3, 270);
             checkMethodComboBox = CreateComboBox(c3, 310, COL_W);
 
             // ── Satır 3: Description
-            CreateLabel("Description", c1, 390);
+            CreateLabel("Açıklama Metni", c1, 390);
             TextBox descriptionTextBox = CreateTextBox(c1, 430, COL_W * 3 + GAP * 2);  
             descriptionTextBox.Multiline = true;
             descriptionTextBox.Height = 80;
 
             
-            targetLabel = CreateLabel("Target Value", c1, 550);
+            targetLabel = CreateLabel("İstenen değer", c1, 550);
             targetTextBox = CreateTextBox(c1, 590, COL_W);
 
             
-            lowerLabel = CreateLabel("Minimum Value", c2, 550);
+            lowerLabel = CreateLabel("Minimum değer", c2, 550);
             lowerTextBox = CreateTextBox(c2, 590, COL_W);
 
-            upperLabel = CreateLabel("Upper Limit", c3, 550);
+            upperLabel = CreateLabel("Üst Limit", c3, 550);
             upperTextBox = CreateTextBox(c3, 590, COL_W);
 
 
-            unitLabel = CreateLabel("Unit", c4, 550);
+            unitLabel = CreateLabel("Birim", c4, 550);
             unitTextBox = CreateTextBox(c4, 590, 160);
             unitLabel.BringToFront();
             unitTextBox.BringToFront();
 
             // ── Satır 5: Options | Image 
-            optionsLabel = CreateLabel("Options", c1, 690);
+            optionsLabel = CreateLabel("Seçenekler", c1, 690);
 
             optionsComboBox = CreateComboBox(c1, 730, COL_W * 2 + GAP);
 
@@ -126,13 +126,13 @@ namespace Quality_Measurement_App
 
             // Image: dropdown + Browse butonu yan yana
             ComboBox imageComboBox = CreateComboBox(c3, 730, COL_W);
-            imageComboBox.Items.Add("— No image —");
+            imageComboBox.Items.Add("— Resim Yok —");
             LoadImagesFromFolder(imageComboBox);
             imageComboBox.SelectedIndex = 0;
 
             Button browseButton = new Button
             {
-                Text = "Browse...",
+                Text = "Ara...",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Size = new Size(120, 45),
                 Location = new Point(c3 + COL_W + GAP, 730),
@@ -148,7 +148,7 @@ namespace Quality_Measurement_App
             {
                 using (OpenFileDialog dlg = new OpenFileDialog())
                 {
-                    dlg.Title = "Select Image File";
+                    dlg.Title = "Resim dosyası seçiniz";
                     dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp";
                     dlg.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
 
@@ -174,7 +174,7 @@ namespace Quality_Measurement_App
             // ── Butonlar
             Button saveButton = new Button
             {
-                Text = "Save Criteria",
+                Text = "Kriteri kaydet",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Size = new Size(320, 60),
                 Location = new Point(c2, 840),
@@ -188,7 +188,7 @@ namespace Quality_Measurement_App
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 Size = new Size(200, 60),
                 Location = new Point(c2 + 320 + GAP, 840),
@@ -220,20 +220,20 @@ namespace Quality_Measurement_App
 
                 if (selectedModel == null)
                 {
-                    MessageBox.Show("Please select a model.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Lütfen model seçiniz", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (!int.TryParse(stepTextBox.Text.Trim(), out int stepNo) || stepNo <= 0)
                 {
-                    MessageBox.Show("Please enter a valid step number (positive integer).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Geçerli adım sayısı giriniz (positif sayı).", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 string criteriaName = criteriaNameTextBox.Text.Trim();
                 if (string.IsNullOrWhiteSpace(criteriaName))
                 {
-                    MessageBox.Show("Please enter criteria name.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Kriterin adını giriniz", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -321,7 +321,7 @@ namespace Quality_Measurement_App
 
                 if (saved)
                 {
-                    MessageBox.Show("Criteria saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Kriter başarıyla kaydedildi!.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     stepTextBox.Clear();
                     criteriaNameTextBox.Clear();
                     descriptionTextBox.Clear();
@@ -406,9 +406,9 @@ namespace Quality_Measurement_App
             switch (checkMethod)
             {
                 case "NumericRange":
-                    targetLabel.Text = "Target Value";
-                    lowerLabel.Text = "+ Tolerance";
-                    upperLabel.Text = "- Tolerance";
+                    targetLabel.Text = "Hedef Değer";
+                    lowerLabel.Text = "+ Tolerans";
+                    upperLabel.Text = "- Tolerans";
 
                     targetLabel.Visible = true;
                     targetTextBox.Visible = true;
@@ -642,7 +642,7 @@ VALUES
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Criteria could not be saved:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Kayıt Başarısız:\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

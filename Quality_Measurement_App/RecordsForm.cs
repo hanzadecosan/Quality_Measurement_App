@@ -24,14 +24,14 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Records Dashboard";
+            Text = "Kayıt görüntüleme ekranı";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
 
             Label titleLabel = new Label
             {
-                Text = "RECORDS DASHBOARD",
+                Text = "KAYIT GÖRÜNTÜLEME EKRANI",
                 Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(800, 60),
@@ -39,7 +39,7 @@ namespace Quality_Measurement_App
             };
             Controls.Add(titleLabel);
 
-            Label fromLabel = CreateLabel("From", 100, 125);
+            Label fromLabel = CreateLabel("Başlangıç", 100, 125);
             fromDatePicker = new DateTimePicker
             {
                 Font = new Font("Segoe UI", 12),
@@ -50,7 +50,7 @@ namespace Quality_Measurement_App
             };
             Controls.Add(fromDatePicker);
 
-            Label toLabel = CreateLabel("To", 310, 125);
+            Label toLabel = CreateLabel("Bitiş", 310, 125);
             toDatePicker = new DateTimePicker
             {
                 Font = new Font("Segoe UI", 12),
@@ -64,7 +64,7 @@ namespace Quality_Measurement_App
 
             Button loadButton = new Button
             {
-                Text = "Load Records",
+                Text = "Ölçümleri yükle",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Size = new Size(190, 42),
                 Location = new Point(520, 154),
@@ -80,7 +80,7 @@ namespace Quality_Measurement_App
                 LoadSessions();
             };
 
-            Label sessionLabel = CreateLabel("Sessions", 100, 225);
+            Label sessionLabel = CreateLabel("Oturumlar", 100, 225);
 
             sessionsGrid = new DataGridView
             {
@@ -98,7 +98,7 @@ namespace Quality_Measurement_App
             Controls.Add(sessionsGrid);
             Label hintLabel = new Label
             {
-                Text = "Click a session row to view measurement details.",
+                Text = "Detaylarını görmek için bir oturumun üzerine tıklayın",
                 Font = new Font("Segoe UI", 11),
                 ForeColor = Color.FromArgb(120, 130, 140),
                 Size = new Size(600, 25),
@@ -119,7 +119,7 @@ namespace Quality_Measurement_App
                 LoadSessionDetails(sessionId);
             };
 
-            Label detailLabel = CreateLabel("Selected Session Details", 100, 620);
+            Label detailLabel = CreateLabel("Seçilen oturum detayları", 100, 620);
 
             detailsGrid = new DataGridView
             {
@@ -136,7 +136,7 @@ namespace Quality_Measurement_App
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 Size = new Size(220, 55),
                 Location = new Point(1600, 950),

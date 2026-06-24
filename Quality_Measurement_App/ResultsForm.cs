@@ -43,7 +43,7 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Measurement Results";
+            Text = "Ölçüm sonuçları";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.FromArgb(245, 247, 250);
@@ -58,7 +58,7 @@ namespace Quality_Measurement_App
 
             Label titleLabel = new Label
             {
-                Text = "Measurement Results",
+                Text = "Ölçüm sonuçları",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 AutoSize = true,
@@ -86,7 +86,7 @@ namespace Quality_Measurement_App
 
             Label tableTitle = new Label
             {
-                Text = "Inspection Summary",
+                Text = "Ölçüm oturumunun özeti",
                 Font = new Font("Segoe UI", 18, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 AutoSize = true,
@@ -124,10 +124,10 @@ namespace Quality_Measurement_App
             resultsGrid.DefaultCellStyle.SelectionForeColor = Color.Black;
             resultsGrid.RowTemplate.Height = 42;
 
-            resultsGrid.Columns.Add("StepNo", "Step");
-            resultsGrid.Columns.Add("CriteriaName", "Criteria");
-            resultsGrid.Columns.Add("EnteredValue", "Entered Value");
-            resultsGrid.Columns.Add("Status", "Status");
+            resultsGrid.Columns.Add("StepNo", "AdımNo");
+            resultsGrid.Columns.Add("CriteriaName", "KriterinAdı");
+            resultsGrid.Columns.Add("EnteredValue", "GirilenDeğer");
+            resultsGrid.Columns.Add("Status", "Durum");
 
             foreach (ResultItem result in results)
             {
@@ -158,7 +158,7 @@ namespace Quality_Measurement_App
 
             Button saveButton = new Button
             {
-                Text = "Save Results",
+                Text = "Ölçümleri kaydet",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Size = new Size(230, 60),
                 Location = new Point(1580, 910),
@@ -260,7 +260,7 @@ namespace Quality_Measurement_App
 
                     transaction.Commit();
 
-                    MessageBox.Show("Results saved successfully.");
+                    MessageBox.Show("Sonuçlar kaydedildi!");
 
                     LoginForm loginform=new LoginForm();
                     loginform.Show();
@@ -269,7 +269,7 @@ namespace Quality_Measurement_App
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    MessageBox.Show("Save failed:\n\n" + ex.Message);
+                    MessageBox.Show("Başarısız!:\n\n" + ex.Message);
                 }
             }
         }
@@ -278,12 +278,15 @@ namespace Quality_Measurement_App
             TimeSpan now = DateTime.Now.TimeOfDay;
 
             if (now >= new TimeSpan(8, 0, 0) && now < new TimeSpan(16, 0, 0))
-                return "Morning Shift";
+                return "1.Vardiya";
 
             if (now >= new TimeSpan(16, 0, 0) && now <= new TimeSpan(23, 59, 59))
-                return "Night Shift";
+                return "2.Vardiya";
 
-            return "Out of Shift";
+            if (now >= new TimeSpan(0, 0, 0) && now <= new TimeSpan(7, 59, 59))
+                return "3.Vardiya";
+
+            return "Vardiya Bulunamadı";
         }
     }
 }

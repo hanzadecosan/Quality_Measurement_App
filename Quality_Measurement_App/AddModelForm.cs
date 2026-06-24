@@ -17,14 +17,14 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Add Model";
+            Text = "Model Ekle";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
 
             Label titleLabel = new Label
             {
-                Text = "ADD NEW MODEL",
+                Text = "YENİ MODEL EKLE",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(700, 70),
@@ -35,7 +35,7 @@ namespace Quality_Measurement_App
 
             Label modelNameLabel = new Label
             {
-                Text = "Model Name",
+                Text = "Model Adı",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 35),
@@ -53,7 +53,7 @@ namespace Quality_Measurement_App
 
             Label descriptionLabel = new Label
             {
-                Text = "Description",
+                Text = "Model Tanımı",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 ForeColor = Color.FromArgb(70, 80, 90),
                 Size = new Size(500, 35),
@@ -72,7 +72,7 @@ namespace Quality_Measurement_App
 
             Button saveButton = new Button
             {
-                Text = "Save Model",
+                Text = "Modeli Kaydet",
                 Font = new Font("Segoe UI", 15, FontStyle.Bold),
                 Size = new Size(500, 60),
                 Location = new Point(710, 580),
@@ -86,7 +86,7 @@ namespace Quality_Measurement_App
 
             Button backButton = new Button
             {
-                Text = "Back",
+                Text = "Geri",
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 Size = new Size(500, 50),
                 Location = new Point(710, 660),
@@ -105,7 +105,7 @@ namespace Quality_Measurement_App
 
                 if (string.IsNullOrWhiteSpace(modelName))
                 {
-                    MessageBox.Show("Please enter model name.");
+                    MessageBox.Show("Lütfen model adı giriniz");
                     return;
                 }
 
@@ -113,7 +113,7 @@ namespace Quality_Measurement_App
 
                 if (saved)
                 {
-                    MessageBox.Show("Model saved successfully.");
+                    MessageBox.Show("Model kaydedildi!");
 
                     ManagerForm managerForm = new ManagerForm();
                     managerForm.Show();
@@ -158,7 +158,7 @@ namespace Quality_Measurement_App
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Model could not be saved:\n\n" + ex.Message);
+                MessageBox.Show("Kaydetme başarısız!:\n\n" + ex.Message);
                 return false;
             }
         }

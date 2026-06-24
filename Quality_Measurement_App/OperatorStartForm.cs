@@ -136,8 +136,8 @@ BackColor = Color.FromArgb(235, 238, 243);
                 Size = new Size(240, 45),
                 Location = new Point(710, 560)
             };
-            sampleGroupComboBox.Items.Add("First Of");
-            sampleGroupComboBox.Items.Add("Last Of");
+            sampleGroupComboBox.Items.Add("İlk");
+            sampleGroupComboBox.Items.Add("Son");
             sampleGroupComboBox.SelectedIndex = 0;
             cardPanel.Controls.Add(sampleGroupComboBox);
 
@@ -259,15 +259,15 @@ BackColor = Color.FromArgb(235, 238, 243);
             TimeSpan now = DateTime.Now.TimeOfDay;
 
             if (now >= new TimeSpan(8, 0, 0) && now < new TimeSpan(16, 0, 0))
-                return "Morning Shift";
+                return "1.Vardiya";
 
             if (now >= new TimeSpan(16, 0, 0) && now <= new TimeSpan(23, 59, 59))
-                return "Noon Shift";
+                return "2.Vardiya";
 
             if (now >= new TimeSpan(0, 0, 0) && now <= new TimeSpan(7, 59, 59))
-                return "Night Shift";
+                return "3.Vardiya";
 
-            return "Out of Shift";
+            return "Vardiya Bulunamadı";
         }
     }
 }

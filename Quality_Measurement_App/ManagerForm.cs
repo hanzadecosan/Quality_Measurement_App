@@ -16,7 +16,7 @@ namespace Quality_Measurement_App
         {
             Controls.Clear();
 
-            Text = "Manager Panel";
+            Text = "Yönetim Paneli";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             BackColor = Color.White;
@@ -25,7 +25,7 @@ namespace Quality_Measurement_App
 
             Label titleLabel = new Label 
             {
-                Text = "MANAGER PANEL",
+                Text = "YÖNETİM PANELİ",
                 Font = new Font("Segoe UI", 30, FontStyle.Bold),
                 ForeColor = Color.FromArgb(28, 39, 51),
                 Size = new Size(620, 70),
@@ -36,7 +36,7 @@ namespace Quality_Measurement_App
 
             Label subtitleLabel = new Label
             {
-                Text = "Quality measurement system management",
+                Text = "İlk/Son numune kontrolleri sistemi yönetim sayfası",
                 Font = new Font("Segoe UI", 14),
                 ForeColor = Color.FromArgb(120, 130, 140),
                 Size = new Size(620, 35),
@@ -45,12 +45,12 @@ namespace Quality_Measurement_App
             };
           Controls.Add(subtitleLabel);
 
-            Button addModelButton = CreateMenuButton("Add New Model", 330);
-            Button addUserButton = CreateMenuButton("Add New User", 420);
-            Button addCriteriaButton = CreateMenuButton("Add Inspection Criteria", 510);
-            Button manageCriteriaButton = CreateMenuButton("Manage Inspection Criteria", 600);
-            Button viewRecordsButton = CreateMenuButton("View Measurement Records", 710);
-            Button backButton = CreateMenuButton("Back to Start", 810);
+            Button addModelButton = CreateMenuButton("Yeni model ekle", 330);
+            Button addUserButton = CreateMenuButton("Yeni kullanıcı ekle", 420);
+            Button addCriteriaButton = CreateMenuButton("Yeni ölçüm kriteri ekle", 510);
+            Button manageCriteriaButton = CreateMenuButton("Mevcut kriterleri düzenle", 600);
+            Button viewRecordsButton = CreateMenuButton("Ölçüm Kayıtlarını Görüntüle", 710);
+            Button backButton = CreateMenuButton("Başa dön", 810);
             
 
             backButton.BackColor = Color.FromArgb(52, 58, 64);
