@@ -541,7 +541,7 @@ namespace Quality_Measurement_App
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(*) FROM dbo.InspectionCriteria WHERE ModelID = @ModelID AND StepNo = @StepNo";
+                    string query = "SELECT COUNT(*) \r\nFROM dbo.InspectionCriteria \r\nWHERE ModelID = @ModelID \r\n  AND StepNo = @StepNo\r\n  AND IsActive = 1";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@ModelID", modelId);

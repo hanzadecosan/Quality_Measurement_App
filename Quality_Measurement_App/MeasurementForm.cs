@@ -75,7 +75,7 @@ namespace Quality_Measurement_App
                     SELECT CriteriaID, StepNo, CriteriaName, Description, InputType, CheckMethod,
                            TargetValue, LowerLimit, UpperLimit, Unit, Options, ImagePath, IsActive = 1
                     FROM dbo.InspectionCriteria
-                    WHERE ModelID = @ModelID
+                    WHERE ModelID = @ModelID AND IsActive=1
                     ORDER BY StepNo";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
