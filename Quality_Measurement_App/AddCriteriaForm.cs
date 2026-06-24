@@ -154,15 +154,25 @@ namespace Quality_Measurement_App
 
                     if (dlg.ShowDialog() == DialogResult.OK)
                     {
-                        // Eğer Images klasörü içindeyse göreceli path kaydet, yoksa tam path
-                        string basePath = AppDomain.CurrentDomain.BaseDirectory;
-                        string fullPath = dlg.FileName;
+                        string imagesFolder =
+                            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
 
-                        string relativePath = fullPath.StartsWith(basePath, StringComparison.OrdinalIgnoreCase)
-                            ? fullPath.Substring(basePath.Length)
-                            : fullPath;
+                        if (!Directory.Exists(imagesFolder))
+                            Directory.CreateDirectory(imagesFolder);
 
-                        // Dropdown'a yoksa ekle, sonra seç
+                        string fileName = Path.GetFileName(dlg.FileName);
+
+                        string destinationPath =
+                            Path.Combine(imagesFolder, fileName);
+
+                        File.Copy(
+                            dlg.FileName,
+                            destinationPath,
+                            true);
+
+                        string relativePath =
+                            Path.Combine("Images", fileName);
+
                         if (!imageComboBox.Items.Contains(relativePath))
                             imageComboBox.Items.Add(relativePath);
 
@@ -350,7 +360,7 @@ namespace Quality_Measurement_App
             if (!Directory.Exists(imagesFolder))
                 return;
 
-            string[] files = Directory.GetFiles(imagesFolder, "*.png");
+            string[] files = Directory.GetFiles(imagesFolder);
             Array.Sort(files);
 
             foreach (string file in files)
