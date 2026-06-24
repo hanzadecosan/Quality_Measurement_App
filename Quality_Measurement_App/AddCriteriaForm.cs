@@ -165,10 +165,18 @@ namespace Quality_Measurement_App
                         string destinationPath =
                             Path.Combine(imagesFolder, fileName);
 
-                        File.Copy(
-                            dlg.FileName,
-                            destinationPath,
-                            true);
+                        if (dlg.FileName.Equals(destinationPath,
+    StringComparison.OrdinalIgnoreCase))
+                        {
+                            // zaten Images klasöründe
+                        }
+                        else
+                        {
+                            File.Copy(
+                                dlg.FileName,
+                                destinationPath,
+                                true);
+                        }
 
                         string relativePath =
                             Path.Combine("Images", fileName);

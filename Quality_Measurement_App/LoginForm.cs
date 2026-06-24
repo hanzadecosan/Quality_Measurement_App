@@ -27,6 +27,7 @@ namespace Quality_Measurement_App
         {
             InitializeComponent();
             BuildLoginScreen();
+            this.ControlBox = false;
         }
 
         private void BuildLoginScreen()
@@ -106,6 +107,23 @@ namespace Quality_Measurement_App
             continueButton.FlatAppearance.BorderSize = 0;
             cardPanel.Controls.Add(continueButton);
 
+            Button exitButton = new Button
+            {
+                Text = "Çıkış",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Size = new Size(500, 60),
+                BackColor = Color.FromArgb(173, 216, 230),
+                Location = new Point(710, 580),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            cardPanel.Controls.Add(exitButton);
+
+            exitButton.FlatAppearance.BorderSize = 0;
+
+            
+
             continueButton.Click += (sender, e) =>
             {
                 UserItem selectedUser = userComboBox.SelectedItem as UserItem;
@@ -131,6 +149,19 @@ namespace Quality_Measurement_App
 
                     operatorStartForm.Show();
                     Hide();
+                }
+            };
+            exitButton.Click += (s, e) =>
+            {
+                DialogResult result = MessageBox.Show(
+                    "Uygulamayı kapatmak istediğinize emin misiniz?",
+                    "Exit Application",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
                 }
             };
 

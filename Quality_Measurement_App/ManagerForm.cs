@@ -51,7 +51,22 @@ namespace Quality_Measurement_App
             Button manageCriteriaButton = CreateMenuButton("Mevcut kriterleri düzenle", 600);
             Button viewRecordsButton = CreateMenuButton("Ölçüm Kayıtlarını Görüntüle", 710);
             Button backButton = CreateMenuButton("Başa dön", 810);
+
+            Button exitButton = new Button
+            {
+                Text = "Çıkış",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Size = new Size(500, 65),
+                BackColor = Color.FromArgb(173, 216, 230),
+                Location = new Point(1250, 810),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            exitButton.FlatAppearance.BorderSize = 0;
+
             
+
 
             backButton.BackColor = Color.FromArgb(52, 58, 64);
 
@@ -61,6 +76,7 @@ namespace Quality_Measurement_App
             Controls.Add(manageCriteriaButton);
             Controls.Add(viewRecordsButton);
             Controls.Add(backButton);
+            Controls.Add(exitButton);
 
             addModelButton.Click += (sender, e) =>
             {
@@ -105,7 +121,20 @@ namespace Quality_Measurement_App
                 loginform.Show();
                 Close();
             };
-          
+            exitButton.Click += (s, e) =>
+            {
+                DialogResult result = MessageBox.Show(
+                    "Uygulamayı kapatmak istediğinize emin misiniz?",
+                    "Exit Application",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+            };
+
         }
 
         private Button CreateMenuButton(string text, int y)
