@@ -58,6 +58,7 @@ namespace Quality_Measurement_App
 
             LoadCriteriaList();
             ShowCurrentCriteria();
+            this.ControlBox = false;
         }
 
         private void LoadCriteriaList()

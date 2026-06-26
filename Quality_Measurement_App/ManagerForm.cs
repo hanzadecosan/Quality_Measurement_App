@@ -10,6 +10,7 @@ namespace Quality_Measurement_App
         {
             InitializeComponent();
             BuildManagerScreen();
+            this.ControlBox = false;
         }
 
         private void BuildManagerScreen()
@@ -51,6 +52,34 @@ namespace Quality_Measurement_App
             Button manageCriteriaButton = CreateMenuButton("Mevcut kriterleri düzenle", 600);
             Button viewRecordsButton = CreateMenuButton("Ölçüm Kayıtlarını Görüntüle", 710);
             Button backButton = CreateMenuButton("Başa dön", 810);
+
+            PictureBox leftLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "companyLogo.jpg")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300, 140),
+                Location = new Point(30, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                BackColor = Color.White
+            };
+
+            Controls.Add(leftLogo);
+            leftLogo.BringToFront();
+
+
+
+            PictureBox rightLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "centro-motion.png")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300, 140),
+                Location = new Point(200, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                BackColor = Color.White
+            };
+
+            Controls.Add(rightLogo);
+            rightLogo.BringToFront();
 
             Button exitButton = new Button
             {

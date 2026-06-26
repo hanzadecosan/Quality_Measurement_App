@@ -57,6 +57,9 @@
     <None Update="Images\v15_step10_measurement.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Logo\Ekran görüntüsü 2026-06-26 090638.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -136,6 +136,8 @@ namespace Quality_Measurement_App
             Controls.Add(leftLogo);
             leftLogo.BringToFront();
 
+            
+
             PictureBox rightLogo = new PictureBox
             {
                 Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "centro-motion.png")),

@@ -29,6 +29,7 @@ namespace Quality_Measurement_App
             selectedUserName = userName;
 
             BuildOperatorStartScreen();
+            this.ControlBox = false;
         }
 
         private void BuildOperatorStartScreen()
@@ -163,6 +164,34 @@ BackColor = Color.FromArgb(235, 238, 243);
             sampleNoComboBox.Items.Add("3");
             sampleNoComboBox.SelectedIndex = 0;
             cardPanel.Controls.Add(sampleNoComboBox);
+
+            PictureBox leftLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "companyLogo.jpg")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300, 140),
+                Location = new Point(30, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                BackColor = Color.White
+            };
+
+            cardPanel.Controls.Add(leftLogo);
+            leftLogo.BringToFront();
+
+
+
+            PictureBox rightLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "centro-motion.png")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300, 140),
+                Location = new Point(200, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                BackColor = Color.White
+            };
+
+            cardPanel.Controls.Add(rightLogo);
+            rightLogo.BringToFront();
 
             Button startButton = new Button
             {
