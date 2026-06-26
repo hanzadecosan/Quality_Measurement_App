@@ -68,8 +68,8 @@ namespace Quality_Measurement_App
                 Size = new Size(500, 45),
                 Location = new Point(710, 450)
             };
-            roleComboBox.Items.Add("Operator");
-            roleComboBox.Items.Add("Manager");
+            roleComboBox.Items.Add("Operatör");
+            roleComboBox.Items.Add("Admin");
             roleComboBox.SelectedIndex = 0;
             Controls.Add(roleComboBox);
 

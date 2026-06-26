@@ -1,8 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Windows;
+using System.Windows.Forms;
 
 
 namespace Quality_Measurement_App
@@ -122,7 +123,33 @@ namespace Quality_Measurement_App
 
             exitButton.FlatAppearance.BorderSize = 0;
 
-            
+            PictureBox leftLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "companyLogo.jpg")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300,140),
+                Location = new Point(30, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                BackColor = Color.White
+            };
+
+            Controls.Add(leftLogo);
+            leftLogo.BringToFront();
+
+            PictureBox rightLogo = new PictureBox
+            {
+                Image = Image.FromFile(Path.Combine(Application.StartupPath, "Logo", "centro-motion.png")),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(300,140),
+                Location = new Point(200, 25),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                BackColor = Color.White
+            };
+
+            Controls.Add(rightLogo);
+            rightLogo.BringToFront();
+
+
 
             continueButton.Click += (sender, e) =>
             {
@@ -199,7 +226,7 @@ namespace Quality_Measurement_App
                         string fullName = reader["FullName"].ToString();
                         int roleId = Convert.ToInt32(reader["RoleID"]);
 
-                        string roleName = roleId == 0 ? "Operator" : "Manager";
+                        string roleName = roleId == 0 ? "Operatör" : "Admin";
 
                         comboBox.Items.Add(new UserItem
                         {
